@@ -44,6 +44,7 @@
 		E04CAF582A33948E0049EBE6 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		E04CAF5B2A33967E0049EBE6 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		E0A4F4AF2A3062F000F3C173 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		E0B6345B2A375D85009CFDAE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E0D27F962A31B0D100C2C48D /* MemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTableViewCell.swift; sourceTree = "<group>"; };
 		E0D27F9B2A31BC6400C2C48D /* MemoryBrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowseViewController.swift; sourceTree = "<group>"; };
 		E0D27F9E2A31C07400C2C48D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -77,8 +78,8 @@
 		E04BF27E2A2F738F0054C6B0 = {
 			isa = PBXGroup;
 			children = (
+				E0B6345B2A375D85009CFDAE /* README.md */,
 				E04BF2892A2F738F0054C6B0 /* Memories */,
-				E00A40B52A30F037009881D1 /* Storyboards */,
 				E04BF2882A2F738F0054C6B0 /* Products */,
 				E04CAF5A2A33967D0049EBE6 /* Frameworks */,
 			);
@@ -95,6 +96,7 @@
 		E04BF2892A2F738F0054C6B0 /* Memories */ = {
 			isa = PBXGroup;
 			children = (
+				E00A40B52A30F037009881D1 /* Storyboards */,
 				E04BF2AF2A2F78540054C6B0 /* Extensions */,
 				E04BF29E2A2F73C70054C6B0 /* DataBase */,
 				E04BF28A2A2F738F0054C6B0 /* AppDelegate.swift */,
