@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MemoryDatabase" representedClassName=".MemoryDatabase" syncable="YES">
+        <attribute name="memoryDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="memoryDescription" optional="YES" attributeType="String"/>
+        <attribute name="memoryImage0" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage1" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage2" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage3" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage4" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage5" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage6" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage7" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage8" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryImage9" optional="YES" attributeType="Binary"/>
+        <attribute name="memoryTitle" optional="YES" attributeType="String"/>
+    </entity>
+</model>
