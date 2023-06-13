@@ -87,7 +87,8 @@ class MemoriesCatalogViewController: UIViewController {
         super.viewDidLoad()
         print("viewDidLoad")
         view.backgroundColor = UIColor(named: "backgroundColor")
-        self.title = "TITLE"
+        self.title = "MEMORIES"
+        navigationController?.navigationBar.prefersLargeTitles = true
         updateTableView()
         numberOfObjectsInDatabase = frc.fetchedObjects?.count ?? 0
     }
@@ -288,6 +289,10 @@ class MemoriesCatalogViewController: UIViewController {
         creatingMemoryViewController.modalPresentationStyle = .fullScreen
         navigationController?.present(creatingMemoryViewController, animated: true)
     }
+    
+    @objc private func addTapped() {
+        print("Add")
+    }
 
 }
 
@@ -318,7 +323,7 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryBrowseViewController = MemoryBrowseViewController()
         memoryBrowseViewController.memoryData = frc.object(at: indexPath)
-        memoryBrowseViewController.title = "MEMORY"
+//        memoryBrowseViewController.title = "MEMORY"
         navigationController?.pushViewController(memoryBrowseViewController, animated: true)
         for cell in tableView.visibleCells {
             cell.setSelected(false, animated: true)

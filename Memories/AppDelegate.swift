@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import FirebaseCore
+//import FirebaseFirestore
+//import FirebaseAuth
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         databaseManager.initContainer {
             print("CoreData is ready")
         }
+        FirebaseApp.configure()
         return true
     }
 

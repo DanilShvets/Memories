@@ -88,10 +88,10 @@ final class CreatingMemoryViewController: UIViewController {
         let textField = TextFieldWithPadding()
         textField.placeholder = "Enter the title for your memory"
         textField.font = UIFont.boldSystemFont(ofSize: 20)
-        textField.autocorrectionType = UITextAutocorrectionType.no
-        textField.keyboardType = UIKeyboardType.default
-        textField.returnKeyType = UIReturnKeyType.done
-        textField.clearButtonMode = UITextField.ViewMode.whileEditing
+        textField.autocorrectionType = .no
+        textField.keyboardType = .default
+        textField.returnKeyType = .done
+//        textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
         textField.contentHorizontalAlignment = .center
         textField.delegate = self
@@ -129,6 +129,8 @@ final class CreatingMemoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
+        self.hideKeyboard()
+        
 //        try? frc.performFetch()
         configureData()
         

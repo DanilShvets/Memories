@@ -66,6 +66,7 @@ final class MemoryBrowseViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
         configureData()
+        setUpNavBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -75,6 +76,39 @@ final class MemoryBrowseViewController: UIViewController {
         configurePageControl()
         configureTitleLabel()
         configureDateLabel()
+    }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+//            //                self.tabBarController?.tabBar.alpha = 1.0
+//            if let tabBarFrame = self.tabBarController?.tabBar.frame {
+//                self.tabBarController?.tabBar.frame.origin.y = self.view.bounds.height + tabBarFrame.height
+//            }
+//        }, completion: { (finished: Bool) -> Void in
+//            self.tabBarController?.tabBar.isUserInteractionEnabled = true
+//        })
+//    }
+//    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        if self.isMovingFromParent {
+//            UIView.animate(withDuration: 0.2, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+////                self.tabBarController?.tabBar.alpha = 1.0
+//                if let tabBarFrame = self.tabBarController?.tabBar.frame {
+//                    self.tabBarController?.tabBar.frame.origin.y = self.view.bounds.height - tabBarFrame.height
+//                }
+//            }, completion: { (finished: Bool) -> Void in
+//                self.tabBarController?.tabBar.isUserInteractionEnabled = true
+//            })
+//        }
+//    }
+    
+    private func setUpNavBar() {
+        self.navigationController?.view.tintColor = UIColor(named: "addMemoryButtonColor")
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
     private func configureData() {
