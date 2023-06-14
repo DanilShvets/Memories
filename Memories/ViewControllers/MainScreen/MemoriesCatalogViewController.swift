@@ -276,6 +276,7 @@ class MemoriesCatalogViewController: UIViewController {
     
     private func configureTableView(fullScreen: Bool) {
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = UIColor(named: "backgroundColor")
         view.addSubview(tableView)
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
@@ -379,6 +380,7 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
         case .insert:
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.left)
+                print("Created object with ObjectID: \(frc.object(at: newIndexPath).objectID)")
             }
             if numberOfObjectsInDatabase == 1 {
                 emptyDatabaseLabel.removeFromSuperview()

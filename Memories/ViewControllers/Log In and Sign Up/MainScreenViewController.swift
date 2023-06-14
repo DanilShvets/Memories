@@ -49,7 +49,24 @@ final class MainScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        self.navigationController?.navigationItem.hidesBackButton = true
+//        self.navigationItem.leftBarButtonItems = []
+        self.tabBarController?.navigationItem.hidesBackButton = true
+        self.navigationItem.setHidesBackButton(true, animated: true)
+        self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//        self.navigationController?.navigationItem.hidesBackButton = false
+//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -58,6 +75,16 @@ final class MainScreenViewController: UIViewController {
         configureSignUpButton()
         configureLogInButton()
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+//        self.navigationController?.navigationItem.hidesBackButton = true
+////        self.navigationItem.leftBarButtonItems = []
+//        self.tabBarController?.navigationItem.hidesBackButton = true
+//        self.navigationItem.setHidesBackButton(true, animated: true)
+//        self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
+//    }
     
     private func assignBackgroundWith(imageName: String){
         let background = UIImage(named: imageName)

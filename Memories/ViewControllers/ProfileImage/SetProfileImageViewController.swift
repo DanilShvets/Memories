@@ -25,7 +25,7 @@ final class SetProfileImageViewController: UIViewController {
         button.addTarget(self, action: #selector(skipButtonPressed), for: .touchUpInside)
         return button
     }()
-    private var profileImage = UIImage(systemName: "person.crop.circle")
+    private var profileImage = UIImage(named: "customCellBackgroundImage")
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -55,6 +55,8 @@ final class SetProfileImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
+        self.navigationItem.setHidesBackButton(true, animated: true)
+        self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
     }
     
     override func viewDidLayoutSubviews() {

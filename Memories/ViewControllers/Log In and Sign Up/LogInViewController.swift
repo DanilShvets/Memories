@@ -108,6 +108,12 @@ final class LogInViewController: UIViewController {
         configureLogInButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        self.navigationController?.navigationItem.hidesBackButton = false
+    }
+    
     private func assignBackgroundWith(imageName: String){
         let background = UIImage(named: imageName)
         var imageView : UIImageView!

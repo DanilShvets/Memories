@@ -20,11 +20,12 @@ final class AuthModel {
             return
         }
         
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let strongSelf = self else { return }
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+//            guard let strongSelf = self else { return }
             if ((authResult?.user) != nil) {
                 complitionError(String(authResult!.user.uid), "")
-
+                UserDefaults.standard.set(true, forKey: "userLoggedIn")
+                UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
             } else {
                 if error != nil {
                     complitionError("", error!.localizedDescription)
@@ -50,7 +51,8 @@ final class AuthModel {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if ((authResult?.user) != nil) {
                 complitionError(String(authResult!.user.uid), "")
-
+                UserDefaults.standard.set(true, forKey: "userLoggedIn")
+                UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
             } else {
                 if error != nil {
                     complitionError("", error!.localizedDescription)
@@ -62,6 +64,15 @@ final class AuthModel {
         }
     }
     
+    func signOut(completion: @escaping (Bool) -> ()) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            completion(true)
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
     
     private func isValidUsername(username: String) -> Bool {
         let user = "[A-Z0-9a-z]{3,100}"

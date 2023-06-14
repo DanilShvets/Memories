@@ -22,7 +22,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = UINavigationController(rootViewController: MainScreenViewController())
+        if UserDefaults.standard.bool(forKey: "userLoggedIn") {
+            window?.rootViewController = UINavigationController(rootViewController: TabBarController())
+        } else {
+            window?.rootViewController = UINavigationController(rootViewController: MainScreenViewController())
+        }
         window?.makeKeyAndVisible()
     }
 

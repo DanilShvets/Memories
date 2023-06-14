@@ -31,7 +31,7 @@ final class MemoryBrowseViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-        let sizeCell = CGSize(width: view.bounds.width / 1.5, height: view.bounds.width / 1.5)
+        let sizeCell = CGSize(width: view.bounds.width - 2 * UIConstants.padding, height: view.bounds.width - 2 * UIConstants.padding)
         layout.itemSize = sizeCell
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
@@ -53,12 +53,12 @@ final class MemoryBrowseViewController: UIViewController {
     private lazy var memoryTitleLabel: UILabel = {
         let title = UILabel()
         title.numberOfLines = 0
-        title.textAlignment = .center
+        title.textAlignment = .left
         return title
     }()
     private lazy var memoryDateLabel: UILabel = {
         let title = UILabel()
-        title.textAlignment = .center
+        title.textAlignment = .left
         return title
     }()
     
@@ -71,11 +71,11 @@ final class MemoryBrowseViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        configureTitleLabel()
+        configureDateLabel()
         configureImageView()
         configureCollectionView()
         configurePageControl()
-        configureTitleLabel()
-        configureDateLabel()
     }
     
 //    override func viewWillAppear(_ animated: Bool) {
@@ -136,12 +136,37 @@ final class MemoryBrowseViewController: UIViewController {
         return formatter.string(from: date)
     }
     
+    private func configureTitleLabel() {
+        memoryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(memoryTitleLabel)
+        memoryTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding).isActive = true
+        memoryTitleLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
+        memoryTitleLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
+        memoryTitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: UIConstants.titlesHeight).isActive = true
+        memoryTitleLabel.font = .boldSystemFont(ofSize: 40.0)
+    }
+    
+    private func configureDateLabel() {
+        memoryDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(memoryDateLabel)
+        memoryDateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        memoryDateLabel.topAnchor.constraint(equalTo: memoryTitleLabel.bottomAnchor, constant: UIConstants.padding).isActive = true
+        memoryDateLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
+        memoryDateLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
+        memoryDateLabel.heightAnchor.constraint(equalToConstant: UIConstants.titlesHeight).isActive = true
+        memoryDateLabel.font = .systemFont(ofSize: 25.0)
+        memoryDateLabel.textColor = .gray
+    }
+    
     private func configureImageView() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
+        imageView.topAnchor.constraint(equalTo: memoryDateLabel.bottomAnchor, constant: UIConstants.padding).isActive = true
+//        imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+//        imageView.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
+//        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+        imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: UIConstants.padding).isActive = true
+        imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -UIConstants.padding).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
     }
     
@@ -169,28 +194,6 @@ final class MemoryBrowseViewController: UIViewController {
         }
     }
     
-    private func configureTitleLabel() {
-        memoryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(memoryTitleLabel)
-        memoryTitleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        memoryTitleLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: UIConstants.padding).isActive = true
-        memoryTitleLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
-        memoryTitleLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
-        memoryTitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: UIConstants.titlesHeight).isActive = true
-        memoryTitleLabel.font = .boldSystemFont(ofSize: 40.0)
-    }
-    
-    private func configureDateLabel() {
-        memoryDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(memoryDateLabel)
-        memoryDateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        memoryDateLabel.topAnchor.constraint(equalTo: memoryTitleLabel.bottomAnchor, constant: UIConstants.padding).isActive = true
-        memoryDateLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
-        memoryDateLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
-        memoryDateLabel.heightAnchor.constraint(equalToConstant: UIConstants.titlesHeight).isActive = true
-        memoryDateLabel.font = .systemFont(ofSize: 25.0)
-        memoryDateLabel.textColor = .gray
-    }
 }
 
 

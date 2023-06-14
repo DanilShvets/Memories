@@ -21,24 +21,24 @@ final class UploadDataModel {
 //        self.ref.child("users").child("uid").setValue(["username": username])
         self.ref.child("users").child(uid).setValue(["username": username])
 //        self.ref.child("users").child("user").setValue()
-        print("----- UPLOADING PROFILE DATA -----")
     }
     
     func sendProfileImageToFirebase(uid: String, photo: Data) {
         let storageRef = storage.reference()
         let profileImageRef = storageRef.child("images/\(uid)/profileImage.jpg")
-        print("----- UPLOADING PROFILE IMAGE -----")
-        let uploadTask = profileImageRef.putData(photo, metadata: nil) { (metadata, error) in
-            guard let metadata = metadata else {
-                return
-            }
+        
+//        let uploadTask = profileImageRef.putData(photo, metadata: nil) { (metadata, error) in
+        profileImageRef.putData(photo, metadata: nil) { (metadata, error) in
+//            guard let metadata = metadata else {
+//                return
+//            }
             
-            let size = metadata.size
-            profileImageRef.downloadURL { (url, error) in
-                guard let downloadURL = url else {
-                    return
-                }
-            }
+//            let size = metadata.size
+//            profileImageRef.downloadURL { (url, error) in
+//                guard let downloadURL = url else {
+//                    return
+//                }
+//            }
         }
     }
 }
