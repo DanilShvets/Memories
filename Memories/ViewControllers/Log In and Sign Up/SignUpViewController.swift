@@ -110,7 +110,6 @@ final class SignUpViewController: UIViewController {
     }()
     private let logInModel = AuthModel()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavBar()
@@ -262,10 +261,17 @@ final class SignUpViewController: UIViewController {
             self.signUpButton.transform = self.signUpButton.transform.scaledBy(x: 1.0/0.85, y: 1.0/0.85)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.logInModel.createNewUser(username: self.usernameTextField.text, email: self.emailTextField.text, password: self.passwordTextField.text) { result in
-                let alert = UIAlertController(title: "Alert", message: result, preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+            self.logInModel.createNewUser(username: self.usernameTextField.text, email: self.emailTextField.text, password: self.passwordTextField.text) { result, error in
+                if error == "" {
+                    let setProfileImageViewController = SetProfileImageViewController()
+                    self.navigationController?.pushViewController(setProfileImageViewController, animated: true)
+                    setProfileImageViewController.username = self.usernameTextField.text!
+                    setProfileImageViewController.userID = result
+                } else {
+                    let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }

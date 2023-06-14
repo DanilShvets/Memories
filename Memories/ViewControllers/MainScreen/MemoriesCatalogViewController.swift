@@ -61,7 +61,6 @@ class MemoriesCatalogViewController: UIViewController {
         return button
     }()
     private let largeConfig = UIImage.SymbolConfiguration(pointSize: UIConstants.buttonSize, weight: .semibold, scale: .small)
-//    private var dataSource: [MemoryDatabase] = []
     private lazy var dataObjectsIDDictionary = [Int: NSManagedObjectID]()
     private lazy var frc: NSFetchedResultsController<MemoryDatabase> = {
         let fr = MemoryDatabase.fetchRequest()
@@ -87,8 +86,9 @@ class MemoriesCatalogViewController: UIViewController {
         super.viewDidLoad()
         print("viewDidLoad")
         view.backgroundColor = UIColor(named: "backgroundColor")
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .always
         self.title = "MEMORIES"
-        navigationController?.navigationBar.prefersLargeTitles = true
         updateTableView()
         numberOfObjectsInDatabase = frc.fetchedObjects?.count ?? 0
     }
@@ -102,6 +102,11 @@ class MemoriesCatalogViewController: UIViewController {
             configureEmptyDatabaseLabel()
         }
         configureAddMemoryButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.navigationItem.hidesBackButton = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

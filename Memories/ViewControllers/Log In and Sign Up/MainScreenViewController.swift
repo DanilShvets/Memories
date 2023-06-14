@@ -123,6 +123,8 @@ final class MainScreenViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let logInViewController = LogInViewController()
             self.navigationController?.pushViewController(logInViewController, animated: true)
+//            let tabBarController = TabBarController()
+//            self.navigationController?.pushViewController(tabBarController, animated: true)
         }
     }
     

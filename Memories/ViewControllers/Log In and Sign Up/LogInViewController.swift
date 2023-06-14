@@ -216,7 +216,6 @@ final class LogInViewController: UIViewController {
         myView.layer.shadowRadius = 5.0
     }
     
-    
     @objc func logInButtonPressed() {
         UIView.animate(withDuration: 0.1) {
             self.logInButton.transform = self.logInButton.transform.scaledBy(x: 0.85, y: 0.85)
@@ -225,12 +224,12 @@ final class LogInViewController: UIViewController {
             self.logInButton.transform = self.logInButton.transform.scaledBy(x: 1.0/0.85, y: 1.0/0.85)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.logInModel.logIn(email: self.emailTextField.text, password: self.passwordTextField.text) { result in
-                if result == "" {
-                    let memoriesCatalogViewController = MemoriesCatalogViewController()
-                    self.navigationController?.pushViewController(memoriesCatalogViewController, animated: true)
+            self.logInModel.logIn(email: self.emailTextField.text, password: self.passwordTextField.text) { result, error  in
+                if error == "" {
+                    let tabBarController = TabBarController()
+                    self.navigationController?.pushViewController(tabBarController, animated: true)
                 } else {
-                    let alert = UIAlertController(title: "Alert", message: result, preferredStyle: UIAlertController.Style.alert)
+                    let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }

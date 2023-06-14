@@ -344,6 +344,10 @@ final class CreatingMemoryViewController: UIViewController {
         if imagesArray.count < 10 {
             var config = PHPickerConfiguration()
             config.selectionLimit = 10 - imagesArray.count
+            config.filter = .images
+            if #available(iOS 15.0, *) {
+                config.selection = .ordered
+            } else { }
             let photoPickerViewController = PHPickerViewController(configuration: config)
             photoPickerViewController.delegate = self
             self.present(photoPickerViewController, animated: true)
@@ -456,7 +460,7 @@ extension CreatingMemoryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         self.dismiss(animated: true)
         for result in results {
-            result.itemProvider.loadObject(ofClass: UIImage.self) { object, erroe in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
                 if let image = object as? UIImage {
                     self.imagesArray.append(image)
                 }

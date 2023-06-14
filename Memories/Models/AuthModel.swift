@@ -10,44 +10,55 @@ import FirebaseAuth
 
 final class AuthModel {
     
-    func logIn(email: String?, password: String?, complitionError: @escaping (String) -> ()) {
+    func logIn(email: String?, password: String?, complitionError: @escaping (String, String) -> ()) {
         guard let email = email, isValidEmail(email: email) else {
-            complitionError("Incorrect email format")
+            complitionError("", "Incorrect email format")
             return
         }
         guard let password = password, isValidPassword(password: password) else {
-            complitionError("The password must be at least 6 characters long and contain only letters, numbers, and signs. or _")
+            complitionError("", "The password must be at least 6 characters long and contain only letters, numbers, and signs. or _")
             return
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else { return }
-            if error != nil {
-                complitionError(error!.localizedDescription)
+            if ((authResult?.user) != nil) {
+                complitionError(String(authResult!.user.uid), "")
+
             } else {
-                complitionError("")
+                if error != nil {
+                    complitionError("", error!.localizedDescription)
+                }
             }
         }
     }
     
-    func createNewUser(username: String?, email: String?, password: String?, complitionError: @escaping (String) -> ()) {
+    func createNewUser(username: String?, email: String?, password: String?, complitionError: @escaping (String, String) -> ()) {
         guard let username = username, isValidUsername(username: username) else {
-            complitionError("The username must contain at least 3 characters and contain only latin letters and numbers")
+            complitionError("", "The username must contain at least 3 characters and contain only latin letters and numbers")
             return
         }
         guard let email = email, isValidEmail(email: email) else {
-            complitionError("Incorrect email format")
+            complitionError("", "Incorrect email format")
             return
         }
         guard let password = password, isValidPassword(password: password) else {
-            complitionError("The password must be at least 6 characters long and contain only letters, numbers, and signs. or _")
+            complitionError("", "The password must be at least 6 characters long and contain only letters, numbers, and signs. or _")
             return
         }
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if error != nil {
-                complitionError(error!.localizedDescription)
+            if ((authResult?.user) != nil) {
+                complitionError(String(authResult!.user.uid), "")
+
+            } else {
+                if error != nil {
+                    complitionError("", error!.localizedDescription)
+                }
             }
+//            if error != nil {
+//                complitionError(error!.localizedDescription)
+//            }
         }
     }
     
