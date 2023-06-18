@@ -31,6 +31,8 @@
 		E05FEAD62A3863E80004EAE5 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD52A3863E80004EAE5 /* UserDataModel.swift */; };
 		E05FEAD82A38699D0004EAE5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD72A38699D0004EAE5 /* TabBarController.swift */; };
 		E05FEADA2A386B040004EAE5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD92A386B040004EAE5 /* UserProfileViewController.swift */; };
+		E07E53292A3F1E410077641F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07E53282A3F1E410077641F /* SearchViewController.swift */; };
+		E07E532B2A3F24B10077641F /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07E532A2A3F24B10077641F /* UserTableViewCell.swift */; };
 		E08AAB012A39DF1E00EC1168 /* DownloadDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */; };
 		E08AAB042A39E0DC00EC1168 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E08AAB032A39E0DC00EC1168 /* Kingfisher */; };
 		E095AFA52A38B57E00A63483 /* UploadDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E095AFA42A38B57E00A63483 /* UploadDataModel.swift */; };
@@ -67,6 +69,8 @@
 		E05FEAD52A3863E80004EAE5 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		E05FEAD72A38699D0004EAE5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E05FEAD92A386B040004EAE5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E07E53282A3F1E410077641F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		E07E532A2A3F24B10077641F /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadDataModel.swift; sourceTree = "<group>"; };
 		E095AFA42A38B57E00A63483 /* UploadDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDataModel.swift; sourceTree = "<group>"; };
 		E0A4F4AF2A3062F000F3C173 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				E05FEAD72A38699D0004EAE5 /* TabBarController.swift */,
+				E07E53272A3F1E1E0077641F /* Search Screen */,
 				E0D27F9A2A31BC4100C2C48D /* MemoryBrowseScreen */,
 				E0D27F982A31BC2400C2C48D /* MainScreen */,
 				E0D27F992A31BC3100C2C48D /* CreatingAndEditingScreen */,
@@ -204,6 +209,15 @@
 				E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E07E53272A3F1E1E0077641F /* Search Screen */ = {
+			isa = PBXGroup;
+			children = (
+				E07E53282A3F1E410077641F /* SearchViewController.swift */,
+				E07E532A2A3F24B10077641F /* UserTableViewCell.swift */,
+			);
+			path = "Search Screen";
 			sourceTree = "<group>";
 		};
 		E08AAB052A39EAAE00EC1168 /* ProfileViewController */ = {
@@ -351,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E04BF28F2A2F738F0054C6B0 /* MemoriesCatalogViewController.swift in Sources */,
+				E07E532B2A3F24B10077641F /* UserTableViewCell.swift in Sources */,
 				E04BF2B12A2F78650054C6B0 /* UIColorExtension.swift in Sources */,
 				E0D27F9C2A31BC6400C2C48D /* MemoryBrowseViewController.swift in Sources */,
 				E0D3BBC42A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift in Sources */,
@@ -358,6 +373,7 @@
 				E0A4F4B02A3062F000F3C173 /* PhotosCollectionViewCell.swift in Sources */,
 				E05FEAC22A384F130004EAE5 /* SignUpViewController.swift in Sources */,
 				E0D3BBC52A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift in Sources */,
+				E07E53292A3F1E410077641F /* SearchViewController.swift in Sources */,
 				E05FEACF2A385A670004EAE5 /* AuthModel.swift in Sources */,
 				E05FEADA2A386B040004EAE5 /* UserProfileViewController.swift in Sources */,
 				E0D3BBB92A324785001DF543 /* ViewController.swift in Sources */,

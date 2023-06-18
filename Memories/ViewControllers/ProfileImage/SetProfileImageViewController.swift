@@ -68,13 +68,6 @@ final class SetProfileImageViewController: UIViewController {
     }
     
     private func configureSkipButton() {
-//        skipButton.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(skipButton)
-//        skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        skipButton.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-//        skipButton.widthAnchor.constraint(equalToConstant: UIConstants.skipButtonWidth).isActive = true
-//        skipButton.heightAnchor.constraint(equalToConstant: UIConstants.buttonHeight).isActive = true
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipButtonPressed))
         navigationItem.rightBarButtonItem?.tintColor = .systemGray3
     }
@@ -86,7 +79,7 @@ final class SetProfileImageViewController: UIViewController {
         profileImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
         profileImageView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
         profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor).isActive = true
-        profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2.0
+        profileImageView.layer.cornerRadius = UIConstants.cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.backgroundColor = .systemGray5
         
@@ -131,14 +124,19 @@ final class SetProfileImageViewController: UIViewController {
     }
     
     private func presentMainScreen() {
+        saveImage()
         uploadDataModel.sendProfileDataToFirebase(uid: userID, username: username)
-        uploadDataModel.sendProfileImageToFirebase(uid: userID, photo: (profileImage?.jpegData(compressionQuality: 1.0))!)
+        uploadDataModel.sendProfileImageToFirebase(uid: userID, photo: (profileImage?.jpegData(compressionQuality: 1.0))!) { _ in
+            let alert = UIAlertController(title: "Alert", message: "No connection. Please try later", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
         let tabBarController = TabBarController()
         self.navigationController?.pushViewController(tabBarController, animated: true)
     }
     
     private func saveImage() {
-        
+        UserDefaults.standard.set(profileImageView.image?.jpegData(compressionQuality: 1.0), forKey: "myProfileImage")
     }
     
     @objc private func addPhotoButtonPressed() {

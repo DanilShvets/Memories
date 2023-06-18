@@ -41,19 +41,6 @@ class MemoryTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        // Initialization code
-//        configureTableViewImage()
-//        configureMemoryTitleLabel()
-//    }
-
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        // Configure the view for the selected state
-//    }
-    
     private func configureCustomView() {
         customView.translatesAutoresizingMaskIntoConstraints = false
         customView.backgroundColor = UIColor(named: "tableViewCellBackgroundColor")

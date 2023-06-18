@@ -6,26 +6,31 @@
 //
 
 import Foundation
-import FirebaseAuth
+import Firebase
 
 final class UserDataModel {
     
-//    func getUserData() {
-//        
-//        let handle = Auth.auth().addStateDidChangeListener { auth, user in
-//            print(user?.displayName)
-//        }
-//        
-//        let user = Auth.auth().currentUser
-//        if let user = user {
-//            let uid = user.uid
-//            let email = user.email
-//            let photoURL = user.photoURL
-//            var multiFactorString = "MultiFactor: "
-//            for info in user.multiFactor.enrolledFactors {
-//                multiFactorString += info.displayName ?? "[DispayName]"
-//                multiFactorString += " "
-//            }
-//        }
-//    }
+    private var ref: DatabaseReference!
+    
+    func getUserID(username: String, completionHandler: @escaping (String) -> ()) {
+        ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
+        ref.child("usernames/\(username)/uid").getData(completion:  { error, snapshot in
+            guard let snapshot = snapshot else { return }
+            if snapshot.exists() {
+                guard let userId = snapshot.value else { return }
+                completionHandler(userId as! String)
+            }
+        })
+    }
+    
+    func getUsername(uid: String, completionHandler: @escaping (String) -> ()) {
+        ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
+        ref.child("users/\(uid)/username").getData(completion:  { error, snapshot in
+            guard let snapshot = snapshot else {return}
+            if snapshot.exists() {
+                guard let username = snapshot.value else { return }
+                completionHandler(username as! String)
+            }
+        })
+    }
 }

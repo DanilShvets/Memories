@@ -10,7 +10,6 @@ import FirebaseCore
 import FirebaseFirestore
 import Firebase
 import FirebaseStorage
-import Kingfisher
 
 final class DownloadDataModel {
     

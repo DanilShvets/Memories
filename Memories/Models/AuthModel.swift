@@ -7,8 +7,11 @@
 
 import Foundation
 import FirebaseAuth
+import Firebase
 
 final class AuthModel {
+    
+    private var ref: DatabaseReference!
     
     func logIn(email: String?, password: String?, complitionError: @escaping (String, String) -> ()) {
         guard let email = email, isValidEmail(email: email) else {
@@ -21,7 +24,6 @@ final class AuthModel {
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-//            guard let strongSelf = self else { return }
             if ((authResult?.user) != nil) {
                 complitionError(String(authResult!.user.uid), "")
                 UserDefaults.standard.set(true, forKey: "userLoggedIn")
@@ -35,6 +37,8 @@ final class AuthModel {
     }
     
     func createNewUser(username: String?, email: String?, password: String?, complitionError: @escaping (String, String) -> ()) {
+        ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
+        
         guard let username = username, isValidUsername(username: username) else {
             complitionError("", "The username must contain at least 3 characters and contain only latin letters and numbers")
             return
@@ -48,20 +52,32 @@ final class AuthModel {
             return
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if ((authResult?.user) != nil) {
-                complitionError(String(authResult!.user.uid), "")
-                UserDefaults.standard.set(true, forKey: "userLoggedIn")
-                UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
-            } else {
-                if error != nil {
-                    complitionError("", error!.localizedDescription)
-                }
-            }
-//            if error != nil {
-//                complitionError(error!.localizedDescription)
+        ref.child("usernames/\(username)").getData(completion:  { error, snapshot in
+//            guard let error = error else {
+//                return
 //            }
-        }
+            
+            guard let snapshot = snapshot else {return}
+            if !snapshot.exists() {
+                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    if ((authResult?.user) != nil) {
+                        complitionError(String(authResult!.user.uid), "")
+                        UserDefaults.standard.set(true, forKey: "userLoggedIn")
+                        UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
+                    } else {
+                        if error != nil {
+                            complitionError("", error!.localizedDescription)
+                        }
+                    }
+                    //            if error != nil {
+                    //                complitionError(error!.localizedDescription)
+                    //            }
+                }
+            } else {
+//                print(error.localizedDescription)
+                complitionError("", "Username is taken")
+            }
+        })
     }
     
     func signOut(completion: @escaping (Bool) -> ()) {
