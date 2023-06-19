@@ -39,7 +39,7 @@ final class MemoriesCollectionViewController: UIViewController {
         view.backgroundColor = UIColor(named: "backgroundColor")
         self.title = "COLLECTION"
         DispatchQueue.global(qos: .default).async {
-            self.memoryDataModel.getMemoryDate { memories, memoryIDs in
+            self.memoryDataModel.getMemoryInfo { memories, memoryIDs in
                 print(memories)
                 self.numberOfCells = memories.count
                 self.memoryIDs = memoryIDs

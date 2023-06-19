@@ -45,13 +45,27 @@ final class DownloadDataModel {
         }
     }
     
-    func downloadMemoryImages(userID: String, memoryID: String, completion: @escaping (URL?) -> ()) {
+    func getNumberOfImages(userID: String, memoryID: String, completion: @escaping (Int) -> ()) {
+        let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
+        var numberOfItems = 0
+        pathReference.listAll { result, error in
+            guard let result = result else { return }
+            numberOfItems = result.items.count
+            completion(numberOfItems)
+        }
+    }
+    
+    
+    func downloadMemoryImages(userID: String, memoryID: String, numberOfItem: Int, completion: @escaping (URL?) -> ()) {
         let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
         
 //        ПОТОМ НАДО БЫДЕТ ПОМЕНЯТЬ JPEG НА JPG
-        let imageRef = pathReference.child("memoryImage0.jpeg")
-//        let imageRef = pathReference
+        
+//        let imageRef = pathReference.child("memoryImage0.jpeg")
+        
         var imageURL: URL?
+        let imageRef = pathReference.child("memoryImage\(numberOfItem).jpeg")
+        
         imageRef.downloadURL { url, error in
             if let error = error {
                 print(error.localizedDescription)

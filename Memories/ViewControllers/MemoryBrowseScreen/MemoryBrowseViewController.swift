@@ -22,12 +22,14 @@ final class MemoryBrowseViewController: UIViewController {
     private lazy var memoryDate = Date()
     private lazy var memoryTitle = ""
     private var downloadDataModel = DownloadDataModel()
+    private var memoryDataModel = MemoryDataModel()
     
     var currentMemoryObjectID = NSManagedObjectID()
     var memoryData: MemoryDatabase?
     var isMyMemory = false
     var userID = ""
     var memoryID = ""
+    private var numberOfImages = 0
     
     private lazy var imageView: UIView = {
         let imageView = UIView()
@@ -72,6 +74,20 @@ final class MemoryBrowseViewController: UIViewController {
         view.backgroundColor = UIColor(named: "backgroundColor")
         if isMyMemory {
             configureData()
+        } else {
+            downloadDataModel.getNumberOfImages(userID: userID, memoryID: memoryID) { result in
+                self.numberOfImages = result
+                self.collectionView.reloadData()
+            }
+            memoryDataModel.getMemoryTitle(memoryID: memoryID) { title in
+                print(title)
+                self.memoryTitleLabel.text = title
+            }
+            memoryDataModel.getMemoryDate(memoryID: memoryID) { date in
+                self.memoryDateLabel.text = self.formatDateFromFirebase(date: String(date))
+            }
+//            collectionView.reloadData()
+//            memoryDateLabel.text = memoryDate
         }
         setUpNavBar()
     }
@@ -143,6 +159,14 @@ final class MemoryBrowseViewController: UIViewController {
         return formatter.string(from: date)
     }
     
+    private func formatDateFromFirebase(date: String) -> String {
+        let memoryDate = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = dateFormatter.date(from:memoryDate)!
+        return formatDate(date: date)
+    }
+    
     private func configureTitleLabel() {
         memoryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(memoryTitleLabel)
@@ -189,15 +213,29 @@ final class MemoryBrowseViewController: UIViewController {
     
     private func configurePageControl(){
         imageView.addSubview(pageControl)
-        pageControl.numberOfPages = imagesArray.count
+        if isMyMemory {
+            pageControl.numberOfPages = imagesArray.count
+        } else {
+            pageControl.numberOfPages = numberOfImages
+        }
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
         pageControl.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -UIConstants.padding).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: UIConstants.pageControllerHeight).isActive = true
         pageControl.layer.cornerRadius = UIConstants.pageControllerHeight / 2
         pageControl.clipsToBounds = true
-        if imagesArray.count < 2 {
-            pageControl.isHidden = true
+        if isMyMemory {
+            if imagesArray.count < 2 {
+                pageControl.isHidden = true
+            } else {
+                pageControl.isHidden = false
+            }
+        } else {
+            if numberOfImages < 2 {
+                pageControl.isHidden = true
+            } else {
+                pageControl.isHidden = false
+            }
         }
     }
     
@@ -210,13 +248,11 @@ extension MemoryBrowseViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var numberOfCells = 1
         if isMyMemory {
-            numberOfCells = imagesArray.isEmpty ? 1 : imagesArray.count
+            return imagesArray.isEmpty ? 1 : imagesArray.count
         } else {
-            
+            return numberOfImages
         }
-        return numberOfCells
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -229,7 +265,7 @@ extension MemoryBrowseViewController: UICollectionViewDataSource, UICollectionVi
                 cell.fillCellWith(image: UIImage(named: "customCellBackgroundImage"))
             }
         } else {
-            downloadDataModel.downloadMemoryImages(userID: userID, memoryID: memoryID) { url in
+            downloadDataModel.downloadMemoryImages(userID: userID, memoryID: memoryID, numberOfItem: indexPath.row) { url in
                 cell.fillCellWith(url: url)
             }
         }
