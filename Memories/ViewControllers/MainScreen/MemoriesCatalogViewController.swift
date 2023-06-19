@@ -123,13 +123,11 @@ class MemoriesCatalogViewController: UIViewController {
         saveButtonPressed()
         print("shouldFetchData: \(shouldFetchData)")
         if shouldFetchData {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.tableView.reloadData()
             }
             shouldFetchData = false
         }
-        
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -329,6 +327,7 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let memoryBrowseViewController = MemoryBrowseViewController()
         memoryBrowseViewController.memoryData = frc.object(at: indexPath)
+        memoryBrowseViewController.isMyMemory = true
 //        memoryBrowseViewController.title = "MEMORY"
         navigationController?.pushViewController(memoryBrowseViewController, animated: true)
         for cell in tableView.visibleCells {

@@ -28,4 +28,37 @@ final class DownloadDataModel {
             }
         }
     }
+    
+    func downloadMemoryMainImage(userID: String, memoryID: String, completion: @escaping (URL?) -> ()) {
+        let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
+        
+//        ПОТОМ НАДО БЫДЕТ ПОМЕНЯТЬ JPEG НА JPG
+        let imageRef = pathReference.child("memoryImage0.jpeg")
+        var imageURL: URL?
+        imageRef.downloadURL { url, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                imageURL = url
+                completion(imageURL)
+            }
+        }
+    }
+    
+    func downloadMemoryImages(userID: String, memoryID: String, completion: @escaping (URL?) -> ()) {
+        let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
+        
+//        ПОТОМ НАДО БЫДЕТ ПОМЕНЯТЬ JPEG НА JPG
+        let imageRef = pathReference.child("memoryImage0.jpeg")
+//        let imageRef = pathReference
+        var imageURL: URL?
+        imageRef.downloadURL { url, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                imageURL = url
+                completion(imageURL)
+            }
+        }
+    }
 }

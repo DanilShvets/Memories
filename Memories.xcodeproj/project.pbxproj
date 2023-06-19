@@ -31,12 +31,15 @@
 		E05FEAD62A3863E80004EAE5 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD52A3863E80004EAE5 /* UserDataModel.swift */; };
 		E05FEAD82A38699D0004EAE5 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD72A38699D0004EAE5 /* TabBarController.swift */; };
 		E05FEADA2A386B040004EAE5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05FEAD92A386B040004EAE5 /* UserProfileViewController.swift */; };
+		E061A2182A40745D00836AC5 /* MemoriesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E061A2172A40745D00836AC5 /* MemoriesCollectionViewController.swift */; };
+		E061A21A2A40755600836AC5 /* MemoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E061A2192A40755600836AC5 /* MemoryCollectionViewCell.swift */; };
 		E07E53292A3F1E410077641F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07E53282A3F1E410077641F /* SearchViewController.swift */; };
 		E07E532B2A3F24B10077641F /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E07E532A2A3F24B10077641F /* UserTableViewCell.swift */; };
 		E08AAB012A39DF1E00EC1168 /* DownloadDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */; };
 		E08AAB042A39E0DC00EC1168 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E08AAB032A39E0DC00EC1168 /* Kingfisher */; };
 		E095AFA52A38B57E00A63483 /* UploadDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E095AFA42A38B57E00A63483 /* UploadDataModel.swift */; };
 		E0A4F4B02A3062F000F3C173 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A4F4AF2A3062F000F3C173 /* PhotosCollectionViewCell.swift */; };
+		E0AAB4F72A4046CB009A5924 /* MemoryDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AAB4F62A4046CB009A5924 /* MemoryDataModel.swift */; };
 		E0B6345E2A376DA5009CFDAE /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B6345D2A376DA5009CFDAE /* MainScreenViewController.swift */; };
 		E0D27F972A31B0D100C2C48D /* MemoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D27F962A31B0D100C2C48D /* MemoryTableViewCell.swift */; };
 		E0D27F9C2A31BC6400C2C48D /* MemoryBrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D27F9B2A31BC6400C2C48D /* MemoryBrowseViewController.swift */; };
@@ -69,11 +72,14 @@
 		E05FEAD52A3863E80004EAE5 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		E05FEAD72A38699D0004EAE5 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E05FEAD92A386B040004EAE5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E061A2172A40745D00836AC5 /* MemoriesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoriesCollectionViewController.swift; sourceTree = "<group>"; };
+		E061A2192A40755600836AC5 /* MemoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		E07E53282A3F1E410077641F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		E07E532A2A3F24B10077641F /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadDataModel.swift; sourceTree = "<group>"; };
 		E095AFA42A38B57E00A63483 /* UploadDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadDataModel.swift; sourceTree = "<group>"; };
 		E0A4F4AF2A3062F000F3C173 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		E0AAB4F62A4046CB009A5924 /* MemoryDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryDataModel.swift; sourceTree = "<group>"; };
 		E0B6345B2A375D85009CFDAE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E0B6345D2A376DA5009CFDAE /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
 		E0D27F962A31B0D100C2C48D /* MemoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -181,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				E05FEAD72A38699D0004EAE5 /* TabBarController.swift */,
+				E061A2162A40742D00836AC5 /* OtherUsersMemoriesScreen */,
 				E07E53272A3F1E1E0077641F /* Search Screen */,
 				E0D27F9A2A31BC4100C2C48D /* MemoryBrowseScreen */,
 				E0D27F982A31BC2400C2C48D /* MainScreen */,
@@ -207,8 +214,18 @@
 				E05FEAD52A3863E80004EAE5 /* UserDataModel.swift */,
 				E095AFA42A38B57E00A63483 /* UploadDataModel.swift */,
 				E08AAB002A39DF1E00EC1168 /* DownloadDataModel.swift */,
+				E0AAB4F62A4046CB009A5924 /* MemoryDataModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E061A2162A40742D00836AC5 /* OtherUsersMemoriesScreen */ = {
+			isa = PBXGroup;
+			children = (
+				E061A2172A40745D00836AC5 /* MemoriesCollectionViewController.swift */,
+				E061A2192A40755600836AC5 /* MemoryCollectionViewCell.swift */,
+			);
+			path = OtherUsersMemoriesScreen;
 			sourceTree = "<group>";
 		};
 		E07E53272A3F1E1E0077641F /* Search Screen */ = {
@@ -372,8 +389,10 @@
 				E05FEAC02A384C6C0004EAE5 /* UIViewControllerExtension.swift in Sources */,
 				E0A4F4B02A3062F000F3C173 /* PhotosCollectionViewCell.swift in Sources */,
 				E05FEAC22A384F130004EAE5 /* SignUpViewController.swift in Sources */,
+				E0AAB4F72A4046CB009A5924 /* MemoryDataModel.swift in Sources */,
 				E0D3BBC52A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift in Sources */,
 				E07E53292A3F1E410077641F /* SearchViewController.swift in Sources */,
+				E061A2182A40745D00836AC5 /* MemoriesCollectionViewController.swift in Sources */,
 				E05FEACF2A385A670004EAE5 /* AuthModel.swift in Sources */,
 				E05FEADA2A386B040004EAE5 /* UserProfileViewController.swift in Sources */,
 				E0D3BBB92A324785001DF543 /* ViewController.swift in Sources */,
@@ -387,6 +406,7 @@
 				E095AFA52A38B57E00A63483 /* UploadDataModel.swift in Sources */,
 				E0D27F972A31B0D100C2C48D /* MemoryTableViewCell.swift in Sources */,
 				E08AAB012A39DF1E00EC1168 /* DownloadDataModel.swift in Sources */,
+				E061A21A2A40755600836AC5 /* MemoryCollectionViewCell.swift in Sources */,
 				E0B6345E2A376DA5009CFDAE /* MainScreenViewController.swift in Sources */,
 				E05FEAD82A38699D0004EAE5 /* TabBarController.swift in Sources */,
 				E04BF28D2A2F738F0054C6B0 /* SceneDelegate.swift in Sources */,

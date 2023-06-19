@@ -30,6 +30,13 @@ final class UserProfileViewController: UIViewController {
         button.titleLabel?.font = .boldSystemFont(ofSize: 18)
         return button
     }()
+    private lazy var usernameLabel: UILabel = {
+        let title = UILabel()
+        title.numberOfLines = 0
+        title.font = .systemFont(ofSize: 30)
+        title.textColor = .gray
+        return title
+    }()
     private lazy var signOutButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(signOutButtonPressed), for: .touchUpInside)
@@ -43,6 +50,8 @@ final class UserProfileViewController: UIViewController {
     private let downloadDataModel = DownloadDataModel()
     private let authModel = AuthModel()
     var myProfile = false
+    var username = ""
+    var userID = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +66,8 @@ final class UserProfileViewController: UIViewController {
         if myProfile {
             configureSignOutButton()
             configureChangePhotoButton()
+        } else {
+            configureUsernameLabel()
         }
     }
     
@@ -73,6 +84,21 @@ final class UserProfileViewController: UIViewController {
 //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
 //        profileImageView.isUserInteractionEnabled = true
 //        profileImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    private func configureUsernameLabel() {
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(usernameLabel)
+        usernameLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        usernameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: UIConstants.padding).isActive = true
+        usernameLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        usernameLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+        usernameLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        if username != "" {
+            usernameLabel.text = "@\(username)"
+        }
+        usernameLabel.textAlignment = .center
+        usernameLabel.backgroundColor = .clear
     }
     
     private func configureChangePhotoButton() {
@@ -124,10 +150,17 @@ final class UserProfileViewController: UIViewController {
     }
     
     private func downloadImage() {
-        guard let userID = UserDefaults.standard.string(forKey: "userID") else {return}
-        downloadDataModel.downloadUserProfileImage(uid: userID) { url in
-            self.profileImageView.kf.setImage(with: url)
+        if myProfile {
+            guard let myUserID = UserDefaults.standard.string(forKey: "userID") else {return}
+            downloadDataModel.downloadUserProfileImage(uid: myUserID) { url in
+                self.profileImageView.kf.setImage(with: url)
+            }
+        } else {
+            downloadDataModel.downloadUserProfileImage(uid: userID) { url in
+                self.profileImageView.kf.setImage(with: url)
+            }
         }
+        
     }
     
     private func saveImage() {

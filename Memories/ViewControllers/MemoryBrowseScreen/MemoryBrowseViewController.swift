@@ -17,12 +17,17 @@ final class MemoryBrowseViewController: UIViewController {
         static let titlesHeight: CGFloat = 50
     }
     
-    var currentMemoryObjectID = NSManagedObjectID()
     private let databaseManager: DataManager = DataManager.shared
     private lazy var imagesArray = [UIImage]()
-    var memoryData: MemoryDatabase?
     private lazy var memoryDate = Date()
     private lazy var memoryTitle = ""
+    private var downloadDataModel = DownloadDataModel()
+    
+    var currentMemoryObjectID = NSManagedObjectID()
+    var memoryData: MemoryDatabase?
+    var isMyMemory = false
+    var userID = ""
+    var memoryID = ""
     
     private lazy var imageView: UIView = {
         let imageView = UIView()
@@ -65,7 +70,9 @@ final class MemoryBrowseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
-        configureData()
+        if isMyMemory {
+            configureData()
+        }
         setUpNavBar()
     }
     
@@ -203,16 +210,28 @@ extension MemoryBrowseViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imagesArray.isEmpty ? 1 : imagesArray.count
+        var numberOfCells = 1
+        if isMyMemory {
+            numberOfCells = imagesArray.isEmpty ? 1 : imagesArray.count
+        } else {
+            
+        }
+        return numberOfCells
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.cellIdentifier, for: indexPath) as? PhotosCollectionViewCell else { return .init() }
         
-        if !imagesArray.isEmpty {
-            cell.fillCellWith(image: imagesArray[indexPath.row])
+        if isMyMemory {
+            if !imagesArray.isEmpty {
+                cell.fillCellWith(image: imagesArray[indexPath.row])
+            } else {
+                cell.fillCellWith(image: UIImage(named: "customCellBackgroundImage"))
+            }
         } else {
-            cell.fillCellWith(image: UIImage(named: "customCellBackgroundImage"))
+            downloadDataModel.downloadMemoryImages(userID: userID, memoryID: memoryID) { url in
+                cell.fillCellWith(url: url)
+            }
         }
         
         return cell

@@ -50,16 +50,18 @@ final class SearchViewController: UIViewController {
     private let userDataModel = UserDataModel()
     private let downloadDataModel = DownloadDataModel()
     private var userID = ""
+    private var username = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
+        hideKeyboard()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureSearchTextField()
-        configureTableView()
+//        configureTableView()
     }
     
     private func configureSearchTextField() {
@@ -93,10 +95,16 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let text = textField.text!
         if text != "" {
+            configureTableView()
             userDataModel.getUserID(username: text) { result in
                 self.userID = result
                 self.tableView.reloadData()
             }
+        } else {
+            username = ""
+            userID = ""
+            tableView.reloadData()
+            tableView.removeFromSuperview()
         }
     }
     
@@ -120,18 +128,20 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.tableViewCellIdentifier, for: indexPath) as? UserTableViewCell else {return .init()}
-        var username = ""
         userDataModel.getUsername(uid: self.userID) { result in
-            username = result
+            self.username = result
         }
         downloadDataModel.downloadUserProfileImage(uid: userID) { url in
-            cell.fillCellWithData(url: url, title: username)
+            cell.fillCellWithData(url: url, title: self.username)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userProfileViewController = UserProfileViewController()
+        userProfileViewController.myProfile = false
+        userProfileViewController.username = username
+        userProfileViewController.userID = userID
         navigationController?.pushViewController(userProfileViewController, animated: true)
         for cell in tableView.visibleCells {
             cell.setSelected(false, animated: true)
