@@ -79,12 +79,12 @@ final class MemoryBrowseViewController: UIViewController {
                 self.numberOfImages = result
                 self.collectionView.reloadData()
             }
-            memoryDataModel.getMemoryTitle(memoryID: memoryID) { title in
+            memoryDataModel.getMemoryTitle(userID: userID, memoryID: memoryID) { title in
                 print(title)
                 self.memoryTitleLabel.text = title
             }
-            memoryDataModel.getMemoryDate(memoryID: memoryID) { date in
-                self.memoryDateLabel.text = self.formatDateFromFirebase(date: String(date))
+            memoryDataModel.getMemoryDate(userID: userID, memoryID: memoryID) { date in
+                self.memoryDateLabel.text = self.formatDateFromFirebase(date: date)
             }
 //            collectionView.reloadData()
 //            memoryDateLabel.text = memoryDate

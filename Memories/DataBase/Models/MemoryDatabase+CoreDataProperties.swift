@@ -2,7 +2,7 @@
 //  MemoryDatabase+CoreDataProperties.swift
 //  Memories
 //
-//  Created by Данил Швец on 08.06.2023.
+//  Created by Данил Швец on 20.06.2023.
 //
 //
 
@@ -29,6 +29,7 @@ extension MemoryDatabase {
     @NSManaged public var memoryImage8: Data?
     @NSManaged public var memoryImage9: Data?
     @NSManaged public var memoryTitle: String?
+    @NSManaged public var memoryID: String?
 
 }
 

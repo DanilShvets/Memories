@@ -14,9 +14,9 @@ final class MemoryDataModel {
     private var posts = [[String : AnyObject]]()
     private var postIDs = [String]()
     
-    func getMemoryInfo(completion: @escaping ([[String : AnyObject]], [String]) -> ()) {
+    func getMemoryInfo(userID: String, completion: @escaping ([[String : AnyObject]], [String]) -> ()) {
         ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
-        let myTopPostsQuery = ref.child("usernames/Tester/Memories").queryOrdered(byChild: "Date")
+        let myTopPostsQuery = ref.child("memories/\(userID)").queryOrdered(byChild: "date")
         myTopPostsQuery.observe(.value, with: { (snapshot) in
             if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for snap in snapshot {
@@ -24,7 +24,6 @@ final class MemoryDataModel {
                         let key = snap.key
                         //                            print(key)
                         //                            print(postDict["Date"]!)
-                        
                         self.posts.append(postDict)
                         self.postIDs.append(key)
                     } else {
@@ -37,9 +36,9 @@ final class MemoryDataModel {
     }
     
     
-    func getMemoryTitle(memoryID: String, completionHandler: @escaping (String) -> ()) {
+    func getMemoryTitle(userID: String, memoryID: String, completionHandler: @escaping (String) -> ()) {
         ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
-        ref.child("usernames/Tester/Memories/\(memoryID)/Title").getData(completion:  { error, snapshot in
+        ref.child("memories/\(userID)/\(memoryID)/title").getData(completion:  { error, snapshot in
             guard let snapshot = snapshot else {return}
             if snapshot.exists() {
                 guard let title = snapshot.value else { return }
@@ -48,13 +47,13 @@ final class MemoryDataModel {
         })
     }
     
-    func getMemoryDate(memoryID: String, completionHandler: @escaping (Int) -> ()) {
+    func getMemoryDate(userID: String, memoryID: String, completionHandler: @escaping (String) -> ()) {
         ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
-        ref.child("usernames/Tester/Memories/\(memoryID)/Date").getData(completion:  { error, snapshot in
+        ref.child("memories/\(userID)/\(memoryID)/date").getData(completion:  { error, snapshot in
             guard let snapshot = snapshot else {return}
             if snapshot.exists() {
                 guard let date = snapshot.value else { return }
-                completionHandler(date as! Int)
+                completionHandler(date as! String)
             }
         })
     }

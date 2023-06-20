@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E00A40B72A30F70B009881D1 /* TextFieldWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00A40B62A30F70B009881D1 /* TextFieldWithPadding.swift */; };
+		E03827092A417FC40097BFEC /* MemoryDatabase+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03827072A417FC40097BFEC /* MemoryDatabase+CoreDataClass.swift */; };
+		E038270A2A417FC40097BFEC /* MemoryDatabase+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03827082A417FC40097BFEC /* MemoryDatabase+CoreDataProperties.swift */; };
 		E04BF28B2A2F738F0054C6B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04BF28A2A2F738F0054C6B0 /* AppDelegate.swift */; };
 		E04BF28D2A2F738F0054C6B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04BF28C2A2F738F0054C6B0 /* SceneDelegate.swift */; };
 		E04BF28F2A2F738F0054C6B0 /* MemoriesCatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E04BF28E2A2F738F0054C6B0 /* MemoriesCatalogViewController.swift */; };
@@ -45,13 +47,13 @@
 		E0D27F9C2A31BC6400C2C48D /* MemoryBrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D27F9B2A31BC6400C2C48D /* MemoryBrowseViewController.swift */; };
 		E0D27F9F2A31C07400C2C48D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D27F9E2A31C07400C2C48D /* DataManager.swift */; };
 		E0D3BBB92A324785001DF543 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D3BBB82A324785001DF543 /* ViewController.swift */; };
-		E0D3BBC42A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D3BBC22A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift */; };
-		E0D3BBC52A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D3BBC32A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift */; };
 		E0F2298C2A39A389008C271D /* SetProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F2298B2A39A389008C271D /* SetProfileImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E00A40B62A30F70B009881D1 /* TextFieldWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextFieldWithPadding.swift; path = Memories/Extensions/TextFieldWithPadding.swift; sourceTree = SOURCE_ROOT; };
+		E03827072A417FC40097BFEC /* MemoryDatabase+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryDatabase+CoreDataClass.swift"; sourceTree = "<group>"; };
+		E03827082A417FC40097BFEC /* MemoryDatabase+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryDatabase+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E04BF2872A2F738F0054C6B0 /* Memories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E04BF28A2A2F738F0054C6B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E04BF28C2A2F738F0054C6B0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,8 +88,6 @@
 		E0D27F9B2A31BC6400C2C48D /* MemoryBrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryBrowseViewController.swift; sourceTree = "<group>"; };
 		E0D27F9E2A31C07400C2C48D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		E0D3BBB82A324785001DF543 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E0D3BBC22A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryDatabase+CoreDataClass.swift"; sourceTree = "<group>"; };
-		E0D3BBC32A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemoryDatabase+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E0F2298B2A39A389008C271D /* SetProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetProfileImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,8 +166,8 @@
 		E04BF2A22A2F74D60054C6B0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E0D3BBC22A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift */,
-				E0D3BBC32A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift */,
+				E03827072A417FC40097BFEC /* MemoryDatabase+CoreDataClass.swift */,
+				E03827082A417FC40097BFEC /* MemoryDatabase+CoreDataProperties.swift */,
 				E04BF29F2A2F73DE0054C6B0 /* Database.xcdatamodeld */,
 			);
 			path = Models;
@@ -385,13 +385,12 @@
 				E07E532B2A3F24B10077641F /* UserTableViewCell.swift in Sources */,
 				E04BF2B12A2F78650054C6B0 /* UIColorExtension.swift in Sources */,
 				E0D27F9C2A31BC6400C2C48D /* MemoryBrowseViewController.swift in Sources */,
-				E0D3BBC42A324A1D001DF543 /* MemoryDatabase+CoreDataClass.swift in Sources */,
 				E05FEAC02A384C6C0004EAE5 /* UIViewControllerExtension.swift in Sources */,
 				E0A4F4B02A3062F000F3C173 /* PhotosCollectionViewCell.swift in Sources */,
 				E05FEAC22A384F130004EAE5 /* SignUpViewController.swift in Sources */,
 				E0AAB4F72A4046CB009A5924 /* MemoryDataModel.swift in Sources */,
-				E0D3BBC52A324A1D001DF543 /* MemoryDatabase+CoreDataProperties.swift in Sources */,
 				E07E53292A3F1E410077641F /* SearchViewController.swift in Sources */,
+				E038270A2A417FC40097BFEC /* MemoryDatabase+CoreDataProperties.swift in Sources */,
 				E061A2182A40745D00836AC5 /* MemoriesCollectionViewController.swift in Sources */,
 				E05FEACF2A385A670004EAE5 /* AuthModel.swift in Sources */,
 				E05FEADA2A386B040004EAE5 /* UserProfileViewController.swift in Sources */,
@@ -403,6 +402,7 @@
 				E04BF28B2A2F738F0054C6B0 /* AppDelegate.swift in Sources */,
 				E00A40B72A30F70B009881D1 /* TextFieldWithPadding.swift in Sources */,
 				E04BF2A12A2F73DE0054C6B0 /* Database.xcdatamodeld in Sources */,
+				E03827092A417FC40097BFEC /* MemoryDatabase+CoreDataClass.swift in Sources */,
 				E095AFA52A38B57E00A63483 /* UploadDataModel.swift in Sources */,
 				E0D27F972A31B0D100C2C48D /* MemoryTableViewCell.swift in Sources */,
 				E08AAB012A39DF1E00EC1168 /* DownloadDataModel.swift in Sources */,

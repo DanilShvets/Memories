@@ -2,7 +2,7 @@
 //  MemoryDatabase+CoreDataClass.swift
 //  Memories
 //
-//  Created by Данил Швец on 08.06.2023.
+//  Created by Данил Швец on 20.06.2023.
 //
 //
 

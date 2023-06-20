@@ -75,4 +75,18 @@ final class DownloadDataModel {
             }
         }
     }
+    
+    func downloadMemoryImagesAsImage(userID: String, memoryID: String, numberOfItem: Int, completion: @escaping (UIImage?) -> ()) {
+        let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
+        let imageRef = pathReference.child("memoryImage\(numberOfItem).jpeg")
+        
+        imageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+            if let error = error {
+            } else {
+                let image = UIImage(data: data!)
+                completion(image)
+            }
+        }
+    }
+    
 }

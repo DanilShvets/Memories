@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import CoreData
 
 final class UserProfileViewController: UIViewController {
     
@@ -17,6 +18,13 @@ final class UserProfileViewController: UIViewController {
         static let skipButtonWidth: CGFloat = 65
     }
     
+    private lazy var frc: NSFetchedResultsController<MemoryDatabase> = {
+        let fr = MemoryDatabase.fetchRequest()
+        fr.sortDescriptors = [NSSortDescriptor(key: #keyPath(MemoryDatabase.memoryDate), ascending: false)]
+        let frc =  NSFetchedResultsController<MemoryDatabase>(fetchRequest: fr, managedObjectContext: databaseManager.mainQueueContext, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
     private var profileImage = UIImage(systemName: "person.crop.circle")
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -46,6 +54,7 @@ final class UserProfileViewController: UIViewController {
         return button
     }()
     
+    private let databaseManager: DataManager = DataManager.shared
     private let uploadDataModel = UploadDataModel()
     private let downloadDataModel = DownloadDataModel()
     private let authModel = AuthModel()
@@ -199,6 +208,8 @@ final class UserProfileViewController: UIViewController {
         }
         authModel.signOut { success in
             if success {
+                self.databaseManager.deleteAllEntities()
+                try? self.frc.performFetch()
                 UserDefaults.standard.set(false, forKey: "userLoggedIn")
                 UserDefaults.standard.removeObject(forKey: "userID")
                 UserDefaults.standard.removeObject(forKey: "myProfileImage")
@@ -226,4 +237,7 @@ extension UserProfileViewController: PHPickerViewControllerDelegate {
             }
         }
     }
+}
+
+extension UserProfileViewController: NSFetchedResultsControllerDelegate {
 }

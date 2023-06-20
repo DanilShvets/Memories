@@ -138,11 +138,13 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userProfileViewController = UserProfileViewController()
-        userProfileViewController.myProfile = false
-        userProfileViewController.username = username
-        userProfileViewController.userID = userID
-        navigationController?.pushViewController(userProfileViewController, animated: true)
+//        let userProfileViewController = UserProfileViewController()
+//        userProfileViewController.myProfile = false
+//        userProfileViewController.username = username
+//        userProfileViewController.userID = userID
+        let memoriesCollectionViewController = MemoriesCollectionViewController()
+        memoriesCollectionViewController.userID = userID
+        navigationController?.pushViewController(memoriesCollectionViewController, animated: true)
         for cell in tableView.visibleCells {
             cell.setSelected(false, animated: true)
         }

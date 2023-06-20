@@ -79,8 +79,20 @@ class MemoriesCatalogViewController: UIViewController {
     }()
     
     private let databaseManager: DataManager = DataManager.shared
+    private let databaseName = "MemoryDatabase"
     private var memoryData: MemoryDatabase?
     private var shouldFetchData = false
+    private var uploadDataModel = UploadDataModel()
+    private var memoryDataModel = MemoryDataModel()
+    private var downloadDataModel = DownloadDataModel()
+    var userID = ""
+    private lazy var memoryIDsArray = [String]()
+    private lazy var imagesArray = [UIImage]()
+    private lazy var mainImage = UIImage()
+    private lazy var memoryDate = Date()
+    private lazy var memoryTitle = ""
+    private lazy var memoryID = ""
+    private lazy var memories = [[String : AnyObject]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +103,7 @@ class MemoriesCatalogViewController: UIViewController {
         self.title = "MEMORIES"
         updateTableView()
         numberOfObjectsInDatabase = frc.fetchedObjects?.count ?? 0
+//        updateFromFirebase()
     }
     
     override func viewDidLayoutSubviews() {
@@ -153,6 +166,69 @@ class MemoriesCatalogViewController: UIViewController {
         }
     }
     
+    private func updateFromFirebase() {
+        let currentNumberOfMemories = frc.fetchedObjects!.count
+        print(currentNumberOfMemories)
+        
+        DispatchQueue.global(qos: .default).async {
+            self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
+                print(memories)
+//                self.memoryIDsArray = memoryIDs
+//                self.memories = memories
+                if memoryIDs.count > currentNumberOfMemories {
+                    for i in 0..<memoryIDs.count {
+                        if currentNumberOfMemories > 0 {
+                            for _ in 0..<currentNumberOfMemories {
+                                self.frc.fetchedObjects!.forEach { memory in
+                                    if self.memoryIDsArray.contains(memory.memoryID!) {
+                                        return
+                                    } else {
+                                        self.memoryID = memoryIDs[i]
+                                        self.memoryDataModel.getMemoryTitle(userID: self.userID, memoryID: self.memoryID, completionHandler: { title in
+                                            self.memoryTitle = title
+                                        })
+                                        self.memoryDataModel.getMemoryDate(userID: self.userID, memoryID: self.memoryID) { date in
+                                            self.memoryDate = self.formatDateFromFirebase(date: date)
+                                        }
+                                        self.downloadDataModel.getNumberOfImages(userID: self.userID, memoryID: self.memoryID) { number in
+                                            for n in 0..<number {
+                                                self.downloadDataModel.downloadMemoryImagesAsImage(userID: self.userID, memoryID: self.memoryID, numberOfItem: n, completion: { image in
+                                                    self.imagesArray.append(image ?? UIImage())
+                                                })
+                                            }
+                                        }
+                                        self.databaseManager.create(with: self.databaseName) { memory in
+                                            guard let memory = memory as? MemoryDatabase else { return }
+                                            self.saveOrUpdateData(memory: memory)
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            self.memoryID = memoryIDs[i]
+                            self.memoryDataModel.getMemoryTitle(userID: self.userID, memoryID: self.memoryID, completionHandler: { title in
+                                self.memoryTitle = title
+                            })
+                            self.memoryDataModel.getMemoryDate(userID: self.userID, memoryID: self.memoryID) { date in
+                                self.memoryDate = self.formatDateFromFirebase(date: date)
+                            }
+                            self.downloadDataModel.getNumberOfImages(userID: self.userID, memoryID: self.memoryID) { number in
+                                for n in 0..<number {
+                                    self.downloadDataModel.downloadMemoryImagesAsImage(userID: self.userID, memoryID: self.memoryID, numberOfItem: n, completion: { image in
+                                        self.imagesArray.append(image ?? UIImage())
+                                    })
+                                }
+                            }
+                            self.databaseManager.create(with: self.databaseName) { memory in
+                                guard let memory = memory as? MemoryDatabase else { return }
+                                self.saveOrUpdateData(memory: memory)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     private func configureAddMemoryButton() {
         addMemoryButton.translatesAutoresizingMaskIntoConstraints = false
@@ -286,6 +362,32 @@ class MemoriesCatalogViewController: UIViewController {
         }
     }
     
+    private func saveOrUpdateData(memory: MemoryDatabase) {
+        memory.memoryTitle = memoryTitle
+        memory.memoryDate = memoryDate
+        memory.memoryImage0 = !imagesArray.isEmpty ? imagesArray[0].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage1 = imagesArray.count > 1 ? imagesArray[1].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage2 = imagesArray.count > 2 ? imagesArray[2].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage3 = imagesArray.count > 3 ? imagesArray[3].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage4 = imagesArray.count > 4 ? imagesArray[4].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage5 = imagesArray.count > 5 ? imagesArray[5].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage6 = imagesArray.count > 6 ? imagesArray[6].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage7 = imagesArray.count > 7 ? imagesArray[7].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage8 = imagesArray.count > 8 ? imagesArray[8].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage9 = imagesArray.count > 9 ? imagesArray[9].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryID = memoryID
+    }
+    
+    private func formatDateFromFirebase(date: String) -> Date {
+        let memoryDate = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = dateFormatter.date(from:memoryDate)!
+        return date
+    }
+    
+    
+    
     @objc func addMemoryButtonPressed() {
         let creatingMemoryViewController = CreatingMemoryViewController()
         creatingMemoryViewController.isEditingMode = false
@@ -338,6 +440,14 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .normal, title: "Delete") { (action, view, handler) in
+            let memoryIndex = indexPath
+            DispatchQueue.global().async {
+                self.uploadDataModel.deleteMemoryDataFromFirebase(userID: self.userID, memoryID: self.frc.object(at: memoryIndex).memoryID!)
+                for i in 0...9 {
+                    self.uploadDataModel.deleteMemoryImagesFromFirebase(userID: self.userID, memoryID: self.frc.object(at: memoryIndex).memoryID!, imageName: "memoryImage\(i)") { error in
+                    }
+                }
+            }
             self.databaseManager.delete(with: self.frc.object(at: indexPath).objectID)
         }
         deleteAction.backgroundColor = .systemRed.withAlphaComponent(0.5)
@@ -422,6 +532,7 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
                     self.configureEmptyDatabaseLabel()
                 }
             }
+            
         case .move:
             if let oldIndexPath = indexPath, let newIndexPath = newIndexPath {
                 tableView.moveRow(at: oldIndexPath, to: newIndexPath)

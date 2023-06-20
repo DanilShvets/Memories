@@ -32,15 +32,16 @@ final class MemoriesCollectionViewController: UIViewController {
     private var memoryDataModel = MemoryDataModel()
     private var downloadDataModel = DownloadDataModel()
     
-    var userID = "TgfgyuRTGd4gf56yfdfgt43r"
+    var userID = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
         self.title = "COLLECTION"
         DispatchQueue.global(qos: .default).async {
-            self.memoryDataModel.getMemoryInfo { memories, memoryIDs in
-                print(memories)
+            self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
+//                print(memoryIDs)
+//                print(memories)
                 self.numberOfCells = memories.count
                 self.memoryIDs = memoryIDs
                 DispatchQueue.main.async {

@@ -33,6 +33,9 @@ final class CreatingMemoryViewController: UIViewController {
     var indexPathForFRC = IndexPath()
     var memoryData: MemoryDatabase?
     private lazy var innerEditingStatus = false
+    private var uploadDataModel = UploadDataModel()
+    private let userID = UserDefaults.standard.value(forKey: "userID")
+    private lazy var memoryID = ""
     
     private lazy var closeButton: UIButton = {
         let button = UIButton()
@@ -150,6 +153,7 @@ final class CreatingMemoryViewController: UIViewController {
     
     private func configureData() {
         innerEditingStatus = isEditingMode
+        memoryID = UUID().uuidString
         
         if innerEditingStatus {
             let imagesInCoreData = [memoryData!.memoryImage0, memoryData!.memoryImage1, memoryData!.memoryImage2, memoryData!.memoryImage3, memoryData!.memoryImage4, memoryData!.memoryImage5, memoryData!.memoryImage6, memoryData!.memoryImage7, memoryData!.memoryImage8, memoryData!.memoryImage9]
@@ -171,6 +175,8 @@ final class CreatingMemoryViewController: UIViewController {
             let memoryDate: String = formatDate(date: memoryDate)
             dateTextField.text = memoryDate
             isEditingMode = false
+            
+            memoryID = (memoryData?.memoryID)!
         }
     }
     
@@ -311,6 +317,13 @@ final class CreatingMemoryViewController: UIViewController {
         return formatter.string(from: date)
     }
     
+    private func formatDateForFirebase(date: Date) -> String {
+        memoryDate = date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd"
+        return formatter.string(from: date)
+    }
+    
     private func addShadowTo(myView: UIView) {
         myView.layer.masksToBounds = false
         myView.layer.shadowColor = UIColor.gray.cgColor
@@ -406,13 +419,26 @@ final class CreatingMemoryViewController: UIViewController {
                         databaseManager.update(objectID: memoryData!.objectID) { memory in
                             guard let memory = memory as? MemoryDatabase else { return }
                             self.saveOrUpdateData(memory: memory)
-                            
                         }
                     } else {
                         databaseManager.create(with: databaseName) { memory in
                             guard let memory = memory as? MemoryDatabase else { return }
                             self.saveOrUpdateData(memory: memory)
                         }
+                    }
+                }
+            }
+            DispatchQueue.global(qos: .default).async {
+                self.uploadDataModel.sendMemoryDataToFirebase(userID: self.userID as! String, memoryID: self.memoryID, title: self.memoryTitleText, date: self.formatDateForFirebase(date: self.memoryDate))
+            }
+            DispatchQueue.global(qos: .default).async {
+                for i in 0...9 {
+                    self.uploadDataModel.deleteMemoryImagesFromFirebase(userID: self.userID as! String, memoryID: self.memoryID, imageName: "memoryImage\(i)") { error in
+                    }
+                }
+                for i in 0..<self.imagesArray.count {
+                    self.uploadDataModel.sendMemoryImagesToFirebase(userID: self.userID as! String, memoryID: self.memoryID, image: self.imagesArray[i].jpegData(compressionQuality: 1.0)!, imageName: "memoryImage\(i)") { error in
+                        print(error)
                     }
                 }
             }
@@ -436,6 +462,7 @@ final class CreatingMemoryViewController: UIViewController {
         memory.memoryImage7 = imagesArray.count > 7 ? imagesArray[7].jpegData(compressionQuality: 1.0) : Data()
         memory.memoryImage8 = imagesArray.count > 8 ? imagesArray[8].jpegData(compressionQuality: 1.0) : Data()
         memory.memoryImage9 = imagesArray.count > 9 ? imagesArray[9].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryID = memoryID
     }
 }
 

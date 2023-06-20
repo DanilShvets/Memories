@@ -28,7 +28,6 @@ final class DataManager {
             if let error = error {
                 fatalError(error.localizedDescription)
             }
-            
             completion()
         }
     }
@@ -40,7 +39,6 @@ final class DataManager {
     func create<T: NSManagedObject>(with entityName: String, configBlock: @escaping (T) -> Void) {
         storeContainer.performBackgroundTask { localContext in
             guard let obj = NSEntityDescription.insertNewObject(forEntityName: entityName, into: localContext) as? T else {return}
-//            print("Created object with ObjectID: \(obj.objectID)")
             configBlock(obj)
             try? localContext.save()
         }
@@ -49,7 +47,6 @@ final class DataManager {
     func delete(with objectID: NSManagedObjectID) {
         storeContainer.performBackgroundTask { localContext in
             localContext.delete(localContext.object(with: objectID))
-            print("Deleted object with ObjectID: \(objectID)")
             try? localContext.save()
         }
     }
@@ -59,7 +56,6 @@ final class DataManager {
             guard let obj = localContext.object(with: objectID) as? T else {return}
             configBlock(obj)
             localContext.refresh(obj, mergeChanges: true)
-            print("Updated object with ObjectID: \(obj.objectID)")
             try? localContext.save()
         }
     }
@@ -72,4 +68,20 @@ final class DataManager {
         return object
     }
     
+    func deleteAllEntities() {
+        let entities = storeContainer.managedObjectModel.entities
+        for entity in entities {
+            deleteAll(entityName: entity.name!)
+        }
+    }
+
+    func deleteAll(entityName: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try storeContainer.viewContext.execute(deleteRequest)
+        } catch let error as NSError {
+            debugPrint(error)
+        }
+    }
 }

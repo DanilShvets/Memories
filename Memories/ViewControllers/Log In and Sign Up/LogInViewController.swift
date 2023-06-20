@@ -233,6 +233,7 @@ final class LogInViewController: UIViewController {
             self.logInModel.logIn(email: self.emailTextField.text, password: self.passwordTextField.text) { result, error  in
                 if error == "" {
                     let tabBarController = TabBarController()
+                    tabBarController.userID = result
                     self.navigationController?.pushViewController(tabBarController, animated: true)
                 } else {
                     let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertController.Style.alert)
