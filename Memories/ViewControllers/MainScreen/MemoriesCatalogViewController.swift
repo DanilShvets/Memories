@@ -96,7 +96,7 @@ class MemoriesCatalogViewController: UIViewController {
     private lazy var memories = [[String : AnyObject]]()
     private lazy var currentNumberOfMemoriesInFirebase = 0
     private lazy var counterForDownload = 0
-    private var timer: Timer!
+    private var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +131,9 @@ class MemoriesCatalogViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        timer?.invalidate()
+        DispatchQueue.main.async {
+            self.timer?.invalidate()
+        }
         counterForDownload = 0
     }
     
@@ -156,9 +158,9 @@ class MemoriesCatalogViewController: UIViewController {
             }
             shouldFetchData = false
         }
-        
-        timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(timerMethod), userInfo: nil, repeats: true)
-        
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -200,10 +202,13 @@ class MemoriesCatalogViewController: UIViewController {
             coreDataMemoryIDsArray.insert(memory.memoryID!)
         }
         DispatchQueue.global(qos: .background).async {
+            var innerSet = Set<String>()
             self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
                 memoryIDs.forEach { id in
-                    self.firebaseMemoryIDsArray.insert(id)
+                    innerSet.insert(id)
+//                    self.firebaseMemoryIDsArray.insert(id)
                 }
+                self.firebaseMemoryIDsArray = innerSet
                 self.currentNumberOfMemoriesInFirebase = self.firebaseMemoryIDsArray.count
             }
         }
@@ -432,7 +437,9 @@ class MemoriesCatalogViewController: UIViewController {
     
     @objc func timerMethod() {
         if firebaseMemoryIDsArray.isEmpty {
-            self.timer.invalidate()
+            DispatchQueue.main.async {
+                self.timer?.invalidate()
+            }
             self.counterForDownload = 0
         }
         
@@ -441,7 +448,7 @@ class MemoriesCatalogViewController: UIViewController {
             print(self.counterForDownload)
             self.counterForDownload += 1
             if self.counterForDownload == self.firebaseMemoryIDsArray.count {
-                self.timer.invalidate()
+                self.timer?.invalidate()
                 self.counterForDownload = 0
             }
         }
@@ -494,8 +501,6 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
             self.coreDataMemoryIDsArray.removeAll()
             self.firebaseMemoryIDsArray.removeAll()
             
-            self.timer.invalidate()
-            
             DispatchQueue.global().async {
                 self.uploadDataModel.deleteMemoryDataFromFirebase(userID: self.userID, memoryID: deletedMemoryID)
                 for i in 0...9 {
@@ -504,19 +509,21 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
                 }
             }
             print("Before dispatch")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                self.updateFromFirebase()
-//                self.coreDataMemoryIDsArray.remove(deletedMemoryID)
-//                self.firebaseMemoryIDsArray.remove(deletedMemoryID)
-//                print("delete memory with ID: \(deletedMemoryID)")
-                print("After dispatch")
-                print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
-                print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
-                if self.counterForDownload > 0 {
-                    self.counterForDownload = 0
-                }
-                self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//                self.updateFromFirebase()
+////                self.coreDataMemoryIDsArray.remove(deletedMemoryID)
+////                self.firebaseMemoryIDsArray.remove(deletedMemoryID)
+////                print("delete memory with ID: \(deletedMemoryID)")
+//                print("After dispatch")
+//                print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
+//                print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
+//                if self.counterForDownload > 0 {
+//                    self.counterForDownload = 0
+//                }
+//                DispatchQueue.main.async {
+//                    self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
+//                }
+//            }
         }
         deleteAction.backgroundColor = .systemRed.withAlphaComponent(0.5)
         deleteAction.image = UIImage(systemName: "trash")?.withTintColor(UIColor(named: "editButtonColor")!)
@@ -582,6 +589,22 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
         case .delete:
             if let indexPath = indexPath {
                 tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+                DispatchQueue.main.async {
+                    self.timer?.invalidate()
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    self.updateFromFirebase()
+                    print("After dispatch")
+                    print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
+                    print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
+                    if self.counterForDownload > 0 {
+                        self.counterForDownload = 0
+                    }
+                    DispatchQueue.main.async {
+                        self.timer?.invalidate()
+                        self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
+                    }
+                }
             }
             if numberOfObjectsInDatabase == 0 {
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
