@@ -22,9 +22,11 @@ final class DownloadDataModel {
         imageRef.downloadURL { url, error in
             if let error = error {
                 print(error.localizedDescription)
+                return
             } else {
                 imageURL = url
                 completion(imageURL)
+                return
             }
         }
     }
@@ -32,15 +34,16 @@ final class DownloadDataModel {
     func downloadMemoryMainImage(userID: String, memoryID: String, completion: @escaping (URL?) -> ()) {
         let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
         
-//        ПОТОМ НАДО БЫДЕТ ПОМЕНЯТЬ JPEG НА JPG
         let imageRef = pathReference.child("memoryImage0.jpeg")
         var imageURL: URL?
         imageRef.downloadURL { url, error in
             if let error = error {
                 print(error.localizedDescription)
+                return
             } else {
                 imageURL = url
                 completion(imageURL)
+                return
             }
         }
     }
@@ -51,7 +54,9 @@ final class DownloadDataModel {
         pathReference.listAll { result, error in
             guard let result = result else { return }
             numberOfItems = result.items.count
+            print("numberOfItemsInFolder:\(numberOfItems)")
             completion(numberOfItems)
+            return
         }
     }
     
@@ -59,19 +64,17 @@ final class DownloadDataModel {
     func downloadMemoryImages(userID: String, memoryID: String, numberOfItem: Int, completion: @escaping (URL?) -> ()) {
         let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
         
-//        ПОТОМ НАДО БЫДЕТ ПОМЕНЯТЬ JPEG НА JPG
-        
-//        let imageRef = pathReference.child("memoryImage0.jpeg")
-        
         var imageURL: URL?
         let imageRef = pathReference.child("memoryImage\(numberOfItem).jpeg")
         
         imageRef.downloadURL { url, error in
             if let error = error {
                 print(error.localizedDescription)
+                return
             } else {
                 imageURL = url
                 completion(imageURL)
+                return
             }
         }
     }
@@ -80,11 +83,12 @@ final class DownloadDataModel {
         let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
         let imageRef = pathReference.child("memoryImage\(numberOfItem).jpeg")
         
-        imageRef.getData(maxSize: 4 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
             if let error = error {
             } else {
                 let image = UIImage(data: data!)
                 completion(image)
+                return
             }
         }
     }

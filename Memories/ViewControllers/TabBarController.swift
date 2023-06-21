@@ -9,7 +9,7 @@ import UIKit
 
 final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    var userID =  UserDefaults.standard.value(forKey: "userID")
+    var userID = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +20,7 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let vc1 = MemoriesCatalogViewController()
         let icon1 = UITabBarItem(title: "MEMORIES", image: UIImage(systemName: "photo.on.rectangle.angled"), tag: 0)
         vc1.tabBarItem = icon1
-        vc1.userID = userID as! String
+        vc1.userID = userID
         
         let vc2 = SearchViewController()
         let icon2 = UITabBarItem(title: "SEARCH", image: UIImage(systemName: "magnifyingglass"), tag: 1)

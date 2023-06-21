@@ -29,6 +29,7 @@ final class UploadDataModel {
         profileImageRef.putData(photo, metadata: nil) { (metadata, error) in
             if error != nil {
                 completion(error!.localizedDescription)
+                return
             }
         }
     }
@@ -46,6 +47,7 @@ final class UploadDataModel {
         memoryImageRef.putData(image, metadata: nil) { (metadata, error) in
             if error != nil {
                 completion(error!.localizedDescription)
+                return
             }
         }
     }
@@ -62,8 +64,10 @@ final class UploadDataModel {
         memoryImageRef.delete { error in
             if let error = error {
                 completion(error.localizedDescription)
+                return
             } else {
                 print("deleted")
+                return
             }
         }
     }

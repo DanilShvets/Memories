@@ -24,10 +24,10 @@ final class AuthModel {
         }
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if ((authResult?.user) != nil) {
-                complitionError(String(authResult!.user.uid), "")
+            if ((authResult?.user) != nil && authResult!.user.uid != "") {
                 UserDefaults.standard.set(true, forKey: "userLoggedIn")
                 UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
+                complitionError(String(authResult!.user.uid), "")
             } else {
                 if error != nil {
                     complitionError("", error!.localizedDescription)
@@ -61,9 +61,9 @@ final class AuthModel {
             if !snapshot.exists() {
                 Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                     if ((authResult?.user) != nil) {
-                        complitionError(String(authResult!.user.uid), "")
                         UserDefaults.standard.set(true, forKey: "userLoggedIn")
                         UserDefaults.standard.set(authResult!.user.uid, forKey: "userID")
+                        complitionError(String(authResult!.user.uid), "")
                     } else {
                         if error != nil {
                             complitionError("", error!.localizedDescription)
