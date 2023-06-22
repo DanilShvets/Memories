@@ -18,7 +18,7 @@ class MemoriesCatalogViewController: UIViewController {
         static let imageSize: CGFloat = 50
     }
     
-    private var hintsAreShown = false
+    private var hintsAreShown = UserDefaults.standard.bool(forKey: "hintsAreShown")
     private var numberOfObjectsInDatabase = 0
     private lazy var emptyDatabaseTitleLabel: UILabel = {
         let title = UILabel()
@@ -577,12 +577,12 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
                         self.configureHintForEdit()
                         self.configureHintForDelete()
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 8.0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                         self.imageViewEditMemory.removeFromSuperview()
                         self.hintForEditMemoryLabel.removeFromSuperview()
                         self.imageViewDeleteMemory.removeFromSuperview()
                         self.hintForDeleteMemoryLabel.removeFromSuperview()
-                        self.hintsAreShown = true
+                        UserDefaults.standard.setValue(true, forKey: "hintsAreShown")
                     }
                 }
             }

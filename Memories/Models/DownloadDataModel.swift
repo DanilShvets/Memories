@@ -17,7 +17,7 @@ final class DownloadDataModel {
     
     func downloadUserProfileImage(uid: String, completion: @escaping (URL?) -> ()) {
         let pathReference = storage.reference(withPath: "images/\(uid)/")
-        let imageRef = pathReference.child("profileImage.jpg")
+        let imageRef = pathReference.child("profileImage.jpeg")
         var imageURL: URL?
         imageRef.downloadURL { url, error in
             if let error = error {
@@ -85,6 +85,7 @@ final class DownloadDataModel {
         
         imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
             if let error = error {
+                print(error)
             } else {
                 let image = UIImage(data: data!)
                 completion(image)

@@ -55,6 +55,7 @@ final class MainScreenViewController: UIViewController {
         self.tabBarController?.navigationItem.hidesBackButton = true
         self.navigationItem.setHidesBackButton(true, animated: true)
         self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
+        UserDefaults.standard.setValue(false, forKey: "hintsAreShown")
     }
     
 //    override func viewWillAppear(_ animated: Bool) {
