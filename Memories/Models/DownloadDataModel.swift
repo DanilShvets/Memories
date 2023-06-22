@@ -85,7 +85,6 @@ final class DownloadDataModel {
         
         imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
             if let error = error {
-                print(error)
             } else {
                 let image = UIImage(data: data!)
                 completion(image)
