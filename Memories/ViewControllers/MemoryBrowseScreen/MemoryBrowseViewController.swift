@@ -80,17 +80,17 @@ final class MemoryBrowseViewController: UIViewController {
                 self.collectionView.reloadData()
             }
             memoryDataModel.getMemoryTitle(userID: userID, memoryID: memoryID) { title in
-                print(title)
                 self.memoryTitleLabel.text = title
             }
             memoryDataModel.getMemoryDate(userID: userID, memoryID: memoryID) { date in
                 self.memoryDateLabel.text = self.formatDateFromFirebase(date: date)
             }
-//            collectionView.reloadData()
-//            memoryDateLabel.text = memoryDate
         }
         setUpNavBar()
     }
+    
+    
+    // MARK: - override методы
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -101,70 +101,14 @@ final class MemoryBrowseViewController: UIViewController {
         configurePageControl()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
-//            //                self.tabBarController?.tabBar.alpha = 1.0
-//            if let tabBarFrame = self.tabBarController?.tabBar.frame {
-//                self.tabBarController?.tabBar.frame.origin.y = self.view.bounds.height + tabBarFrame.height
-//            }
-//        }, completion: { (finished: Bool) -> Void in
-//            self.tabBarController?.tabBar.isUserInteractionEnabled = true
-//        })
-//    }
-//    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        if self.isMovingFromParent {
-//            UIView.animate(withDuration: 0.2, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
-////                self.tabBarController?.tabBar.alpha = 1.0
-//                if let tabBarFrame = self.tabBarController?.tabBar.frame {
-//                    self.tabBarController?.tabBar.frame.origin.y = self.view.bounds.height - tabBarFrame.height
-//                }
-//            }, completion: { (finished: Bool) -> Void in
-//                self.tabBarController?.tabBar.isUserInteractionEnabled = true
-//            })
-//        }
-//    }
+    
+    // MARK: - Конфигурация UI
     
     private func setUpNavBar() {
         self.navigationController?.view.tintColor = UIColor(named: "addMemoryButtonColor")
         let backButton = UIBarButtonItem()
         backButton.title = ""
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-    }
-    
-    private func configureData() {
-        let imagesInCoreData = [memoryData?.memoryImage0, memoryData?.memoryImage1, memoryData?.memoryImage2, memoryData?.memoryImage3, memoryData?.memoryImage4, memoryData?.memoryImage5, memoryData?.memoryImage6, memoryData?.memoryImage7, memoryData?.memoryImage8, memoryData?.memoryImage9]
-        var numberOfImages = 0
-        imagesInCoreData.forEach { data in
-            guard let data = data else {return}
-            if data.count != 0 {
-                numberOfImages += 1
-            }
-        }
-        for i in 0..<numberOfImages {
-            imagesArray.append(UIImage(data: imagesInCoreData[i]!)!)
-        }
-        let memoryTitle: String = memoryData?.memoryTitle ?? ""
-        memoryTitleLabel.text = memoryTitle
-        let memoryDate: String = formatDate(date: memoryData?.memoryDate ?? Date())
-        memoryDateLabel.text = memoryDate
-    }
-    
-    private func formatDate(date: Date) -> String {
-        memoryDate = date
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        return formatter.string(from: date)
-    }
-    
-    private func formatDateFromFirebase(date: String) -> String {
-        let memoryDate = date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        let date = dateFormatter.date(from:memoryDate)!
-        return formatDate(date: date)
     }
     
     private func configureTitleLabel() {
@@ -193,9 +137,6 @@ final class MemoryBrowseViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         imageView.topAnchor.constraint(equalTo: memoryDateLabel.bottomAnchor, constant: UIConstants.padding).isActive = true
-//        imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-//        imageView.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
-//        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: UIConstants.padding).isActive = true
         imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -UIConstants.padding).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
@@ -239,8 +180,46 @@ final class MemoryBrowseViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - Преобразование данных
+    
+    private func configureData() {
+        let imagesInCoreData = [memoryData?.memoryImage0, memoryData?.memoryImage1, memoryData?.memoryImage2, memoryData?.memoryImage3, memoryData?.memoryImage4, memoryData?.memoryImage5, memoryData?.memoryImage6, memoryData?.memoryImage7, memoryData?.memoryImage8, memoryData?.memoryImage9]
+        var numberOfImages = 0
+        imagesInCoreData.forEach { data in
+            guard let data = data else {return}
+            if data.count != 0 {
+                numberOfImages += 1
+            }
+        }
+        for i in 0..<numberOfImages {
+            imagesArray.append(UIImage(data: imagesInCoreData[i]!)!)
+        }
+        let memoryTitle: String = memoryData?.memoryTitle ?? ""
+        memoryTitleLabel.text = memoryTitle
+        let memoryDate: String = formatDate(date: memoryData?.memoryDate ?? Date())
+        memoryDateLabel.text = memoryDate
+    }
+    
+    private func formatDate(date: Date) -> String {
+        memoryDate = date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        return formatter.string(from: date)
+    }
+    
+    private func formatDateFromFirebase(date: String) -> String {
+        let memoryDate = date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        let date = dateFormatter.date(from:memoryDate)!
+        return formatDate(date: date)
+    }
+    
 }
 
+
+// MARK: - Работы с коллекцией
 
 extension MemoryBrowseViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {

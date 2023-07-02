@@ -62,6 +62,9 @@ final class UserProfileViewController: UIViewController {
     var username = ""
     var userID = ""
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
@@ -80,6 +83,9 @@ final class UserProfileViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - Конфигурация UI
+    
     private func configureProfileImageView() {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.backgroundColor = .systemGray5
@@ -90,9 +96,6 @@ final class UserProfileViewController: UIViewController {
         profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor).isActive = true
         profileImageView.layer.cornerRadius = UIConstants.cornerRadius
         profileImageView.clipsToBounds = true
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
-//        profileImageView.isUserInteractionEnabled = true
-//        profileImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     private func configureUsernameLabel() {
@@ -158,6 +161,9 @@ final class UserProfileViewController: UIViewController {
         }
     }
     
+    
+    // MARK: - Обновление данных
+    
     private func downloadImage() {
         if myProfile {
             guard let myUserID = UserDefaults.standard.string(forKey: "userID") else {return}
@@ -184,6 +190,9 @@ final class UserProfileViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    
+    // MARK: - @objc методы
     
     @objc private func changePhotoButtonPressed() {
         UIView.animate(withDuration: 0.1) {
@@ -220,6 +229,8 @@ final class UserProfileViewController: UIViewController {
     }
 }
 
+
+// MARK: - Photo picker
 
 extension UserProfileViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {

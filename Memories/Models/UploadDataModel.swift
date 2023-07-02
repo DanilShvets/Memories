@@ -37,7 +37,6 @@ final class UploadDataModel {
     func sendMemoryDataToFirebase(userID: String, memoryID: String, title: String, date: String) {
         ref = Database.database(url: "https://memoriesapp-d9697-default-rtdb.firebaseio.com").reference()
         self.ref.child("memories").child(userID).child(memoryID).setValue(["title": title, "date": date])
-//        self.ref.child("memories").child(userID).child(memoryID).setValue(["date": date])
     }
     
     func sendMemoryImagesToFirebase(userID: String, memoryID: String, image: Data, imageName: String, completion: @escaping (String) -> ()) {
@@ -66,7 +65,6 @@ final class UploadDataModel {
                 completion(error.localizedDescription)
                 return
             } else {
-                print("deleted")
                 return
             }
         }

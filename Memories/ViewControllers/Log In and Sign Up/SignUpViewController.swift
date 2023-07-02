@@ -10,8 +10,6 @@ import UIKit
 final class SignUpViewController: UIViewController {
     
     private struct UIConstants {
-//        static let titleLabelFontSize: CGFloat = 50
-//        static let titleLabelHeight: CGFloat = 60
         static let labelFontSize: CGFloat = 24
         static let labelHeight: CGFloat = 30
         static let loginButtonFontSize: CGFloat = 18
@@ -26,13 +24,6 @@ final class SignUpViewController: UIViewController {
         static let keyboardMove: CGFloat = 90
     }
     
-//    private lazy var titleLabel: UILabel = {
-//        let title = UILabel()
-//        title.numberOfLines = 0
-//        title.textAlignment = .left
-//        title.font = .boldSystemFont(ofSize: UIConstants.titleLabelFontSize)
-//        return title
-//    }()
     private lazy var customView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "loginBackgroundColor")
@@ -51,7 +42,6 @@ final class SignUpViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.keyboardType = .default
         textField.returnKeyType = .done
-//        textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
         textField.contentHorizontalAlignment = .center
         textField.delegate = self
@@ -71,7 +61,6 @@ final class SignUpViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .done
-//        textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
         textField.contentHorizontalAlignment = .center
         textField.delegate = self
@@ -110,6 +99,9 @@ final class SignUpViewController: UIViewController {
     }()
     private let logInModel = AuthModel()
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavBar()
@@ -127,7 +119,6 @@ final class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         assignBackgroundWith(imageName: "loginBackground")
-//        configureTitleLabel()
         configureCustomView()
         configureUsernameLabel()
         configureUsernameTextField()
@@ -137,6 +128,9 @@ final class SignUpViewController: UIViewController {
         configurePasswordTextField()
         configureSignUpButton()
     }
+    
+    
+    // MARK: - Конфигурация UI
     
     private func assignBackgroundWith(imageName: String){
         let background = UIImage(named: imageName)
@@ -151,10 +145,7 @@ final class SignUpViewController: UIViewController {
     }
     
     private func setUpNavBar() {
-//        self.navigationController?.view.backgroundColor = UIColor.white
         self.navigationController?.view.tintColor = UIColor(named: "addMemoryButtonColor")
-//        self.navigationItem.title = "About Us"
-
         let backButton = UIBarButtonItem()
         backButton.title = ""
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
@@ -258,6 +249,8 @@ final class SignUpViewController: UIViewController {
         myView.layer.shadowRadius = 5.0
     }
     
+    
+    // MARK: - @objc методы
     
     @objc func signUpButtonPressed() {
         UIView.animate(withDuration: 0.1) {

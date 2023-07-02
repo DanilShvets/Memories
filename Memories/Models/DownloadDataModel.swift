@@ -54,7 +54,6 @@ final class DownloadDataModel {
         pathReference.listAll { result, error in
             guard let result = result else { return }
             numberOfItems = result.items.count
-            print("numberOfItemsInFolder:\(numberOfItems)")
             completion(numberOfItems)
             return
         }
@@ -83,7 +82,7 @@ final class DownloadDataModel {
         let pathReference = storage.reference(withPath: "memories/\(userID)/\(memoryID)")
         let imageRef = pathReference.child("memoryImage\(numberOfItem).jpeg")
         
-        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 7 * 1024 * 1024) { data, error in
             if let error = error {
             } else {
                 let image = UIImage(data: data!)

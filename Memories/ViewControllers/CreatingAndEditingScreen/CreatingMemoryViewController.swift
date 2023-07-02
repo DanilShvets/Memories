@@ -94,7 +94,6 @@ final class CreatingMemoryViewController: UIViewController {
         textField.autocorrectionType = .no
         textField.keyboardType = .default
         textField.returnKeyType = .done
-//        textField.clearButtonMode = .whileEditing
         textField.contentVerticalAlignment = .center
         textField.contentHorizontalAlignment = .center
         textField.delegate = self
@@ -115,28 +114,20 @@ final class CreatingMemoryViewController: UIViewController {
         return button
     }()
     
-//    private lazy var frc: NSFetchedResultsController<MemoryDatabase> = {
-//        let fr = MemoryDatabase.fetchRequest()
-//        fr.sortDescriptors = [NSSortDescriptor(key: #keyPath(MemoryDatabase.memoryDate), ascending: false)]
-//        let frc =  NSFetchedResultsController<MemoryDatabase>(fetchRequest: fr, managedObjectContext: databaseManager.mainQueueContext, sectionNameKeyPath: nil, cacheName: nil)
-//        frc.delegate = self
-//        return frc
-//    }()
-    
     private let databaseManager: DataManager = DataManager.shared
     private let databaseName = "MemoryDatabase"
     private lazy var mainImage = UIImage()
     private lazy var memoryDate = Date()
     private lazy var memoryTitle = ""
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
         self.hideKeyboard()
-        
-//        try? frc.performFetch()
         configureData()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -151,34 +142,8 @@ final class CreatingMemoryViewController: UIViewController {
         configureSaveButton()
     }
     
-    private func configureData() {
-        innerEditingStatus = isEditingMode
-        memoryID = UUID().uuidString
-        
-        if innerEditingStatus {
-            let imagesInCoreData = [memoryData!.memoryImage0, memoryData!.memoryImage1, memoryData!.memoryImage2, memoryData!.memoryImage3, memoryData!.memoryImage4, memoryData!.memoryImage5, memoryData!.memoryImage6, memoryData!.memoryImage7, memoryData!.memoryImage8, memoryData!.memoryImage9]
-            var numberOfImages = 0
-            imagesInCoreData.forEach { data in
-                guard let data = data else {return}
-                if data.count != 0 {
-                    numberOfImages += 1
-                }
-            }
-            for i in 0..<numberOfImages {
-                imagesArray.append(UIImage(data: imagesInCoreData[i]!)!)
-            }
-            memoryTitleText = memoryData!.memoryTitle ?? ""
-            memoryTitleTextField.text = memoryTitleText
-//            let memoryDate: String = formatDate(date: memoryData.memoryDate ?? Date())
-//            dateTextField.text = memoryDate
-            memoryDate = memoryData!.memoryDate ?? Date()
-            let memoryDate: String = formatDate(date: memoryDate)
-            dateTextField.text = memoryDate
-            isEditingMode = false
-            
-            memoryID = (memoryData?.memoryID)!
-        }
-    }
+    
+    // MARK: - Конфигурация UI
     
     private func configureCloseButton() {
         let closeButtonImage = UIImage(systemName: "xmark", withConfiguration: largeConfig)
@@ -198,7 +163,6 @@ final class CreatingMemoryViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         imageView.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: UIConstants.padding).isActive = true
-//        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
@@ -268,9 +232,7 @@ final class CreatingMemoryViewController: UIViewController {
         
         datePicker.datePickerMode = .date
         datePicker.addTarget(self, action: #selector(dateChange(datePicker:)), for: .valueChanged)
-//        datePicker.frame.size = CGSize(width: view.bounds.width - 2*UIConstants.padding, height: 250)
         dateTextField.inputView = datePicker
-//        dateTextField.inputAccessoryView = createToolBar()
         datePicker.maximumDate = Date()
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.date = memoryDate
@@ -287,16 +249,6 @@ final class CreatingMemoryViewController: UIViewController {
         dateTextField.layer.cornerRadius = UIConstants.cornerRadius
     }
     
-    private func createToolBar() -> UIToolbar {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(endEditingDate))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([spaceButton, doneButton], animated: true)
-        return toolBar
-    }
-    
     private func configureSaveButton() {
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(saveButton)
@@ -308,6 +260,45 @@ final class CreatingMemoryViewController: UIViewController {
         saveButton.backgroundColor = UIColor(named: "saveButtonColor")?.withAlphaComponent(0.7)
         addShadowTo(myView: saveButton)
         saveButton.setTitle("Save", for: .normal)
+    }
+    
+    private func addShadowTo(myView: UIView) {
+        myView.layer.masksToBounds = false
+        myView.layer.shadowColor = UIColor.gray.cgColor
+        myView.layer.shadowPath = UIBezierPath(roundedRect: myView.bounds, cornerRadius: myView.layer.cornerRadius).cgPath
+        myView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
+        myView.layer.shadowOpacity = 0.5
+        myView.layer.shadowRadius = 5.0
+    }
+    
+    
+    // MARK: - Обновление данных
+    
+    private func configureData() {
+        innerEditingStatus = isEditingMode
+        memoryID = UUID().uuidString
+        
+        if innerEditingStatus {
+            let imagesInCoreData = [memoryData!.memoryImage0, memoryData!.memoryImage1, memoryData!.memoryImage2, memoryData!.memoryImage3, memoryData!.memoryImage4, memoryData!.memoryImage5, memoryData!.memoryImage6, memoryData!.memoryImage7, memoryData!.memoryImage8, memoryData!.memoryImage9]
+            var numberOfImages = 0
+            imagesInCoreData.forEach { data in
+                guard let data = data else {return}
+                if data.count != 0 {
+                    numberOfImages += 1
+                }
+            }
+            for i in 0..<numberOfImages {
+                imagesArray.append(UIImage(data: imagesInCoreData[i]!)!)
+            }
+            memoryTitleText = memoryData!.memoryTitle ?? ""
+            memoryTitleTextField.text = memoryTitleText
+            memoryDate = memoryData!.memoryDate ?? Date()
+            let memoryDate: String = formatDate(date: memoryDate)
+            dateTextField.text = memoryDate
+            isEditingMode = false
+            
+            memoryID = (memoryData?.memoryID)!
+        }
     }
     
     private func formatDate(date: Date) -> String {
@@ -324,23 +315,31 @@ final class CreatingMemoryViewController: UIViewController {
         return formatter.string(from: date)
     }
     
-    private func addShadowTo(myView: UIView) {
-        myView.layer.masksToBounds = false
-        myView.layer.shadowColor = UIColor.gray.cgColor
-        myView.layer.shadowPath = UIBezierPath(roundedRect: myView.bounds, cornerRadius: myView.layer.cornerRadius).cgPath
-        myView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        myView.layer.shadowOpacity = 0.5
-        myView.layer.shadowRadius = 5.0
+    private func saveOrUpdateData(memory: MemoryDatabase) {
+        memory.memoryTitle = memoryTitleText
+        memory.memoryDate = memoryDate
+        memory.memoryImage0 = !imagesArray.isEmpty ? imagesArray[0].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage1 = imagesArray.count > 1 ? imagesArray[1].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage2 = imagesArray.count > 2 ? imagesArray[2].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage3 = imagesArray.count > 3 ? imagesArray[3].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage4 = imagesArray.count > 4 ? imagesArray[4].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage5 = imagesArray.count > 5 ? imagesArray[5].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage6 = imagesArray.count > 6 ? imagesArray[6].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage7 = imagesArray.count > 7 ? imagesArray[7].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage8 = imagesArray.count > 8 ? imagesArray[8].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryImage9 = imagesArray.count > 9 ? imagesArray[9].jpegData(compressionQuality: 1.0) : Data()
+        memory.memoryID = memoryID
     }
+    
+    
+    // MARK: - @objc методы
     
     @objc func closeViewController() {
         dismiss(animated: true)
-//        presentColorPicker()
     }
     
     @objc private func dateChange(datePicker: UIDatePicker) {
         dateTextField.text = formatDate(date: datePicker.date)
-        print(formatDate(date: datePicker.date))
     }
     
     @objc private func endEditingDate() {
@@ -448,40 +447,10 @@ final class CreatingMemoryViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    private func saveOrUpdateData(memory: MemoryDatabase) {
-        memory.memoryTitle = memoryTitleText
-        memory.memoryDate = memoryDate
-        memory.memoryImage0 = !imagesArray.isEmpty ? imagesArray[0].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage1 = imagesArray.count > 1 ? imagesArray[1].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage2 = imagesArray.count > 2 ? imagesArray[2].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage3 = imagesArray.count > 3 ? imagesArray[3].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage4 = imagesArray.count > 4 ? imagesArray[4].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage5 = imagesArray.count > 5 ? imagesArray[5].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage6 = imagesArray.count > 6 ? imagesArray[6].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage7 = imagesArray.count > 7 ? imagesArray[7].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage8 = imagesArray.count > 8 ? imagesArray[8].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryImage9 = imagesArray.count > 9 ? imagesArray[9].jpegData(compressionQuality: 1.0) : Data()
-        memory.memoryID = memoryID
-    }
 }
 
 
-extension CreatingMemoryViewController: UIColorPickerViewControllerDelegate {
-    func presentColorPicker() {
-        let colorPicker = UIColorPickerViewController()
-        colorPicker.title = "Background Color"
-        colorPicker.supportsAlpha = false
-        colorPicker.delegate = self
-        colorPicker.modalPresentationStyle = .popover
-        colorPicker.popoverPresentationController?.sourceView = closeButton
-        self.present(colorPicker, animated: true)
-    }
-    
-    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
-        closeButton.tintColor = viewController.selectedColor
-    }
-}
+// MARK: - Photo picker
 
 extension CreatingMemoryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -506,6 +475,9 @@ extension CreatingMemoryViewController: PHPickerViewControllerDelegate {
         }
     }
 }
+
+
+// MARK: - Работа с коллекцией
 
 extension CreatingMemoryViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -544,7 +516,6 @@ extension CreatingMemoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         memoryTitleText = textField.text ?? ""
         textField.resignFirstResponder()
-        print(memoryTitleText)
         memoryTitle = memoryTitleText
         return true
     }

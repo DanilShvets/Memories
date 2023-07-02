@@ -98,24 +98,23 @@ class MemoriesCatalogViewController: UIViewController {
     private lazy var counterForDownload = 0
     private var timer: Timer?
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
         userID = UserDefaults.standard.value(forKey: "userID") as! String
-        print("userID:\(userID)")
         view.backgroundColor = UIColor(named: "backgroundColor")
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.largeTitleDisplayMode = .always
         self.title = "MEMORIES"
         updateTableView()
         numberOfObjectsInDatabase = frc.fetchedObjects?.count ?? 0
-//        getNumberOfMemoriesInFirebase()
         updateFromFirebase()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
         configureTableView(fullScreen: true)
         if numberOfObjectsInDatabase < 1 {
             configureEmptyDatabaseTitleLabel()
@@ -139,19 +138,9 @@ class MemoriesCatalogViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
-        
         try? frc.performFetch()
         
-//        updateFromFirebase()
-        
-//        if numberOfObjectsInDatabase < 1 {
-//            configureEmptyDatabaseTitleLabel()
-//            configureEmptyDatabaseLabel()
-//        }
-        
         saveButtonPressed()
-        print("shouldFetchData: \(shouldFetchData)")
         if shouldFetchData {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.tableView.reloadData()
@@ -165,7 +154,6 @@ class MemoriesCatalogViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("viewDidDisappear")
         if numberOfObjectsInDatabase == 0 {
             emptyDatabaseTitleLabel.removeFromSuperview()
             emptyDatabaseLabel.removeFromSuperview()
@@ -179,69 +167,8 @@ class MemoriesCatalogViewController: UIViewController {
         }
     }
     
-    func updateTableView() {
-        try? frc.performFetch()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-            self.tableView.reloadData()
-        }
-    }
     
-//    private func getNumberOfMemoriesInFirebase() {
-//        DispatchQueue.global(qos: .default).async {
-//            self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
-//                self.currentNumberOfMemoriesInFirebase = memoryIDs.count
-//                print("currentNumberOfMemoriesInFirebase: \(self.currentNumberOfMemoriesInFirebase)")
-//            }
-//        }
-//
-//    }
-    
-    private func updateFromFirebase() {
-        frc.fetchedObjects!.forEach { memory in
-            coreDataMemoryIDsArray.insert(memory.memoryID!)
-        }
-        DispatchQueue.global(qos: .background).async {
-            var innerSet = Set<String>()
-            self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
-                memoryIDs.forEach { id in
-                    innerSet.insert(id)
-//                    self.firebaseMemoryIDsArray.insert(id)
-                }
-                self.firebaseMemoryIDsArray = innerSet
-                self.currentNumberOfMemoriesInFirebase = self.firebaseMemoryIDsArray.count
-            }
-        }
-    }
-    
-    private func downloadData(counter: Int) {
-        if !self.firebaseMemoryIDsArray.isEmpty {
-            let innerArray = Array(self.firebaseMemoryIDsArray)
-            let item = innerArray[counter]
-            
-            print("itemID:\(item)")
-            print("FirebaseItemID:\(innerArray[counter])")
-            print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
-            print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
-            
-            DispatchQueue.global(qos: .background).async {
-                if !self.coreDataMemoryIDsArray.contains(item) {
-                    self.databaseManager.create(with: self.databaseName) { memory in
-                        print("creating memory")
-                        guard let memory = memory as? MemoryDatabase else { return }
-                        self.saveOrUpdateDataFor(item: item, memory: memory)
-                        sleep(2)
-                        print("clearing imagesArray")
-                        DispatchQueue.main.async {
-                            self.imagesArray.removeAll()
-                            self.coreDataMemoryIDsArray.insert(item)
-                            self.tableView.reloadData()
-                        }
-                    }
-                }
-            }
-        }
-    }
+    // MARK: - Конфигурация UI
     
     private func configureAddMemoryButton() {
         addMemoryButton.translatesAutoresizingMaskIntoConstraints = false
@@ -340,25 +267,6 @@ class MemoriesCatalogViewController: UIViewController {
         viewForArrow.rightAnchor.constraint(equalTo: addMemoryButton.leftAnchor, constant: -UIConstants.padding).isActive = true
         viewForArrow.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIConstants.buttonPadding).isActive = true
         viewForArrow.backgroundColor = .gray.withAlphaComponent(0.2)
-        drawCurvedArrow()
-    }
-    
-    private func drawCurvedArrow() {
-        let path = UIBezierPath()
-        let arrowLayer = CAShapeLayer()
-        let xStart = emptyDatabaseLabel.bounds.midX
-        let yStart = viewForArrow.bounds.minY
-        let xEnd = viewForArrow.bounds.maxX
-        let yEnd = viewForArrow.bounds.maxY - addMemoryButton.bounds.midY
-        let cp1 = CGPoint(x: xStart, y: (yEnd + yStart) / 2)
-        let cp2 = CGPoint(x: (xEnd + xStart) / 2, y: yEnd)
-        path.move(to: CGPoint(x: xStart, y: yStart))
-        path.addCurve(to: CGPoint(x: xEnd, y: yEnd), controlPoint1: cp1, controlPoint2: cp2)
-        arrowLayer.path = path.cgPath
-        arrowLayer.lineWidth = 15.0
-        arrowLayer.strokeColor = UIColor.red.cgColor
-        arrowLayer.fillColor = UIColor.clear.cgColor
-        viewForArrow.layer.addSublayer(arrowLayer)
     }
     
     private func configureTableView(fullScreen: Bool) {
@@ -372,6 +280,55 @@ class MemoriesCatalogViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         } else {
             tableView.heightAnchor.constraint(equalToConstant: 180.0).isActive = true
+        }
+    }
+    
+    
+    // MARK: - Обновление данных
+    
+    private func updateTableView() {
+        try? frc.performFetch()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func updateFromFirebase() {
+        frc.fetchedObjects!.forEach { memory in
+            coreDataMemoryIDsArray.insert(memory.memoryID!)
+        }
+        DispatchQueue.global(qos: .background).async {
+            var innerSet = Set<String>()
+            self.memoryDataModel.getMemoryInfo(userID: self.userID) { memories, memoryIDs in
+                memoryIDs.forEach { id in
+                    innerSet.insert(id)
+                }
+                self.firebaseMemoryIDsArray = innerSet
+                self.currentNumberOfMemoriesInFirebase = self.firebaseMemoryIDsArray.count
+            }
+        }
+    }
+    
+    private func downloadData(counter: Int) {
+        if !self.firebaseMemoryIDsArray.isEmpty {
+            let innerArray = Array(self.firebaseMemoryIDsArray)
+            let item = innerArray[counter]
+            
+            DispatchQueue.global(qos: .background).async {
+                if !self.coreDataMemoryIDsArray.contains(item) {
+                    self.databaseManager.create(with: self.databaseName) { memory in
+                        guard let memory = memory as? MemoryDatabase else { return }
+                        self.saveOrUpdateDataFor(item: item, memory: memory)
+                        sleep(2)
+                        DispatchQueue.main.async {
+                            self.imagesArray.removeAll()
+                            self.coreDataMemoryIDsArray.insert(item)
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -423,6 +380,9 @@ class MemoriesCatalogViewController: UIViewController {
         return date
     }
     
+    
+    // MARK: - @objc методы
+    
     @objc func addMemoryButtonPressed() {
         let creatingMemoryViewController = CreatingMemoryViewController()
         creatingMemoryViewController.isEditingMode = false
@@ -432,7 +392,6 @@ class MemoriesCatalogViewController: UIViewController {
     }
     
     @objc private func addTapped() {
-        print("Add")
     }
     
     @objc func timerMethod() {
@@ -445,7 +404,6 @@ class MemoriesCatalogViewController: UIViewController {
         
         downloadData(counter: counterForDownload)
         DispatchQueue.main.async {
-            print(self.counterForDownload)
             self.counterForDownload += 1
             if self.counterForDownload == self.firebaseMemoryIDsArray.count {
                 self.timer?.invalidate()
@@ -456,6 +414,9 @@ class MemoriesCatalogViewController: UIViewController {
 
 }
 
+
+// MARK: - Работа с таблицей
+
 extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return frc.sections?.count ?? 0
@@ -463,9 +424,6 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return frc.sections?[section].numberOfObjects ?? 0
     }
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 10
-//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
@@ -484,7 +442,6 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
         let memoryBrowseViewController = MemoryBrowseViewController()
         memoryBrowseViewController.memoryData = frc.object(at: indexPath)
         memoryBrowseViewController.isMyMemory = true
-//        memoryBrowseViewController.title = "MEMORY"
         navigationController?.pushViewController(memoryBrowseViewController, animated: true)
         for cell in tableView.visibleCells {
             cell.setSelected(false, animated: true)
@@ -508,22 +465,6 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
                     }
                 }
             }
-            print("Before dispatch")
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//                self.updateFromFirebase()
-////                self.coreDataMemoryIDsArray.remove(deletedMemoryID)
-////                self.firebaseMemoryIDsArray.remove(deletedMemoryID)
-////                print("delete memory with ID: \(deletedMemoryID)")
-//                print("After dispatch")
-//                print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
-//                print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
-//                if self.counterForDownload > 0 {
-//                    self.counterForDownload = 0
-//                }
-//                DispatchQueue.main.async {
-//                    self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
-//                }
-//            }
         }
         deleteAction.backgroundColor = .systemRed.withAlphaComponent(0.5)
         deleteAction.image = UIImage(systemName: "trash")?.withTintColor(UIColor(named: "editButtonColor")!)
@@ -534,8 +475,6 @@ extension MemoriesCatalogViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, handler) in
-//            self.getNumberOfMemoriesInFirebase()
-//            self.updateFromFirebase()
             let editMemoryViewController = CreatingMemoryViewController()
             editMemoryViewController.delegate = self
             editMemoryViewController.isEditingMode = true
@@ -561,13 +500,11 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         let rowAnimation = UITableView.RowAnimation.middle
         numberOfObjectsInDatabase = frc.fetchedObjects?.count ?? 0
-        print(numberOfObjectsInDatabase)
         switch type {
         case .insert:
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.left)
                 self.coreDataMemoryIDsArray.insert(self.frc.object(at: newIndexPath).memoryID!)
-                print("Created object with ObjectID: \(frc.object(at: newIndexPath).objectID)")
             }
             if numberOfObjectsInDatabase == 1 {
                 emptyDatabaseLabel.removeFromSuperview()
@@ -592,24 +529,9 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
                 DispatchQueue.main.async {
                     self.timer?.invalidate()
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    self.updateFromFirebase()
-                    print("After dispatch")
-                    print("coreDataMemoryIDsArray:\(self.coreDataMemoryIDsArray)")
-                    print("firebaseMemoryIDsArray:\(self.firebaseMemoryIDsArray)")
-                    if self.counterForDownload > 0 {
-                        self.counterForDownload = 0
-                    }
-                    DispatchQueue.main.async {
-                        self.timer?.invalidate()
-                        self.timer = Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(self.timerMethod), userInfo: nil, repeats: true)
-                    }
-                }
+                self.updateFromFirebase()
             }
             if numberOfObjectsInDatabase == 0 {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-//                    self.tableView.removeFromSuperview()
-//                }
                 if !hintsAreShown {
                     imageViewEditMemory.removeFromSuperview()
                     hintForEditMemoryLabel.removeFromSuperview()
@@ -618,10 +540,6 @@ extension MemoriesCatalogViewController: NSFetchedResultsControllerDelegate {
                     hintsAreShown = true
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                    self.imageViewEditMemory.removeFromSuperview()
-//                    self.hintForEditMemoryLabel.removeFromSuperview()
-//                    self.imageViewDeleteMemory.removeFromSuperview()
-//                    self.hintForDeleteMemoryLabel.removeFromSuperview()
                     self.configureEmptyDatabaseTitleLabel()
                     self.configureEmptyDatabaseLabel()
                 }

@@ -35,6 +35,9 @@ final class MemoriesCollectionViewController: UIViewController {
     var userID = ""
     var username = ""
     
+    
+    // MARK: - override метод
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
@@ -56,6 +59,8 @@ final class MemoriesCollectionViewController: UIViewController {
     }
     
     
+    // MARK: - Конфигурация UI
+    
     private func configureCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
@@ -68,6 +73,8 @@ final class MemoriesCollectionViewController: UIViewController {
     
 }
 
+
+// MARK: - работа с коллекцией
 
 extension MemoriesCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {

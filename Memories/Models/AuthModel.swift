@@ -53,10 +53,6 @@ final class AuthModel {
         }
         
         ref.child("usernames/\(username)").getData(completion:  { error, snapshot in
-//            guard let error = error else {
-//                return
-//            }
-            
             guard let snapshot = snapshot else {return}
             if !snapshot.exists() {
                 Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
@@ -69,12 +65,8 @@ final class AuthModel {
                             complitionError("", error!.localizedDescription)
                         }
                     }
-                    //            if error != nil {
-                    //                complitionError(error!.localizedDescription)
-                    //            }
                 }
             } else {
-//                print(error.localizedDescription)
                 complitionError("", "Username is taken")
             }
         })

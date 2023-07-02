@@ -34,7 +34,6 @@ class MemoryCollectionViewCell: UICollectionViewCell {
         imageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: bounds.width - 20.0).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-//        imageView.image = UIImage(named: "customCellBackgroundImage")
         imageView.layer.cornerRadius = 20.0
         imageView.clipsToBounds = true
     }

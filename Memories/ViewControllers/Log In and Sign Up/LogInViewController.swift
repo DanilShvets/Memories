@@ -90,6 +90,8 @@ final class LogInViewController: UIViewController {
     private let logInModel = AuthModel()
     
     
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavBar()
@@ -99,7 +101,6 @@ final class LogInViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         assignBackgroundWith(imageName: "loginBackground")
-//        configureTitleLabel()
         configureCustomView()
         configureEmailLabel()
         configureEmailTextField()
@@ -113,6 +114,9 @@ final class LogInViewController: UIViewController {
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         self.navigationController?.navigationItem.hidesBackButton = false
     }
+    
+    
+    // MARK: - Конфигурация UI
     
     private func assignBackgroundWith(imageName: String){
         let background = UIImage(named: imageName)
@@ -133,18 +137,6 @@ final class LogInViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
 
-    
-//    private func configureTitleLabel() {
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(titleLabel)
-//        titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-//        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.padding/2).isActive = true
-//        titleLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: UIConstants.padding).isActive = true
-//        titleLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -UIConstants.padding).isActive = true
-//        titleLabel.heightAnchor.constraint(equalToConstant: UIConstants.titleLabelHeight).isActive = true
-//        titleLabel.text = "LOG IN"
-//    }
-    
     private func configureCustomView() {
         customView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(customView)
@@ -152,7 +144,6 @@ final class LogInViewController: UIViewController {
         customView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2*UIConstants.padding).isActive = true
         customView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
         customView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
-//        customView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2).isActive = true
         customView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         customView.layer.cornerRadius = UIConstants.cornerRadius
     }
@@ -212,7 +203,6 @@ final class LogInViewController: UIViewController {
         addShadowTo(myView: logInButton)
     }
     
-   
     private func addShadowTo(myView: UIView) {
         myView.layer.masksToBounds = false
         myView.layer.shadowColor = UIColor.gray.cgColor
@@ -221,6 +211,9 @@ final class LogInViewController: UIViewController {
         myView.layer.shadowOpacity = 0.5
         myView.layer.shadowRadius = 5.0
     }
+    
+    
+    // MARK: - @objc методы
     
     @objc func logInButtonPressed() {
         UIView.animate(withDuration: 0.1) {

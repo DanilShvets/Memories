@@ -52,6 +52,9 @@ final class SetProfileImageViewController: UIViewController {
     var username = ""
     var userID = ""
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
@@ -66,6 +69,9 @@ final class SetProfileImageViewController: UIViewController {
         configureAddPhotoButton()
         configureSaveButton()
     }
+    
+    
+    // MARK: - Конфигурация UI
     
     private func configureSkipButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipButtonPressed))
@@ -82,10 +88,6 @@ final class SetProfileImageViewController: UIViewController {
         profileImageView.layer.cornerRadius = UIConstants.cornerRadius
         profileImageView.clipsToBounds = true
         profileImageView.backgroundColor = .systemGray5
-        
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
-//        profileImageView.isUserInteractionEnabled = true
-//        profileImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     private func configureAddPhotoButton() {
@@ -135,9 +137,15 @@ final class SetProfileImageViewController: UIViewController {
         self.navigationController?.pushViewController(tabBarController, animated: true)
     }
     
+    
+    // MARK: - Обновление данных
+    
     private func saveImage() {
         UserDefaults.standard.set(profileImageView.image?.jpegData(compressionQuality: 1.0), forKey: "myProfileImage")
     }
+    
+    
+    // MARK: - @objc методы
     
     @objc private func addPhotoButtonPressed() {
         UIView.animate(withDuration: 0.1) {
@@ -206,6 +214,9 @@ final class SetProfileImageViewController: UIViewController {
         }
     }
 }
+
+
+// MARK: - Photo picker
 
 extension SetProfileImageViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {

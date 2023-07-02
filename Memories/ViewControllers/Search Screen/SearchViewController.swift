@@ -52,6 +52,9 @@ final class SearchViewController: UIViewController {
     private var userID = ""
     private var username = ""
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "backgroundColor")
@@ -62,6 +65,9 @@ final class SearchViewController: UIViewController {
         super.viewDidLayoutSubviews()
         configureSearchTextField()
     }
+    
+    
+    // MARK: - Конфигурация UI
     
     private func configureSearchTextField() {
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -112,6 +118,9 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 }
+
+
+// MARK: - Работа с таблицей
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {

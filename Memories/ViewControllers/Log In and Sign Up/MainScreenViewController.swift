@@ -47,27 +47,18 @@ final class MainScreenViewController: UIViewController {
         return button
     }()
     
+    
+    // MARK: - override методы
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         self.navigationController?.navigationItem.hidesBackButton = true
-//        self.navigationItem.leftBarButtonItems = []
         self.tabBarController?.navigationItem.hidesBackButton = true
         self.navigationItem.setHidesBackButton(true, animated: true)
         self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
         UserDefaults.standard.setValue(false, forKey: "hintsAreShown")
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-//        self.navigationController?.navigationItem.hidesBackButton = false
-//    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -77,15 +68,8 @@ final class MainScreenViewController: UIViewController {
         configureLogInButton()
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-//        self.navigationController?.navigationItem.hidesBackButton = true
-////        self.navigationItem.leftBarButtonItems = []
-//        self.tabBarController?.navigationItem.hidesBackButton = true
-//        self.navigationItem.setHidesBackButton(true, animated: true)
-//        self.tabBarController?.navigationItem.setHidesBackButton(true, animated: true)
-//    }
+    
+    // MARK: - Конфигурация UI
     
     private func assignBackgroundWith(imageName: String){
         let background = UIImage(named: imageName)
@@ -118,7 +102,6 @@ final class MainScreenViewController: UIViewController {
         signUpButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
         signUpButton.heightAnchor.constraint(equalToConstant: UIConstants.loginButtonSize).isActive = true
         signUpButton.layer.cornerRadius = UIConstants.loginButtonCornerRadius
-//        addShadowTo(myView: signUpButton)
     }
     
     private func configureLogInButton() {
@@ -129,17 +112,10 @@ final class MainScreenViewController: UIViewController {
         logInButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 1.5).isActive = true
         logInButton.heightAnchor.constraint(equalToConstant: UIConstants.loginButtonSize).isActive = true
         logInButton.layer.cornerRadius = UIConstants.loginButtonCornerRadius
-//        addShadowTo(myView: logInButton)
     }
     
-    private func addShadowTo(myView: UIView) {
-        myView.layer.masksToBounds = false
-        myView.layer.shadowColor = UIColor(named: "loginButtonColor")?.cgColor
-        myView.layer.shadowPath = UIBezierPath(roundedRect: myView.bounds, cornerRadius: myView.layer.cornerRadius).cgPath
-        myView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
-        myView.layer.shadowOpacity = 0.5
-        myView.layer.shadowRadius = 5.0
-    }
+    
+    // MARK: - @objc методы
     
     @objc func logInButtonPressed() {
         UIView.animate(withDuration: 0.1) {
@@ -151,8 +127,6 @@ final class MainScreenViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let logInViewController = LogInViewController()
             self.navigationController?.pushViewController(logInViewController, animated: true)
-//            let tabBarController = TabBarController()
-//            self.navigationController?.pushViewController(tabBarController, animated: true)
         }
     }
     
